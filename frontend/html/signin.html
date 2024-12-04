@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <!--font awsome-->
+    <script
+      src="https://kit.fontawesome.com/e62814bca5.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--custom css-->
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <div class="form">
+      <form id="signInForm">
+        <h2 class="formTitle">Registrirajte se</h2>
+        <div class="formElement">
+          <label for="username">Korisničko ime:</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Pero Peric"
+            required="true"
+          />
+        </div>
+
+        <div class="formElement">
+          <label for="password">Lozinka:</label>
+          <input type="password" name="password" id="password" required="true" />
+        </div>
+
+        <div class="formElement">
+          <label for="confirmPassword">Potvrdite lozinku:</label>
+          <input type="password" name="confirmPassword" id="confirmPassword" required="true" />
+        </div>
+
+        <div class="formElement">
+          <label for="firstName">Ime:</label>
+          <input type="text" name="firstName" id="firstName" required="true" />
+        </div>
+
+        <div class="formElement">
+          <label for="lastName">Prezime:</label>
+          <input type="text" name="lastName" id="lastName" />
+        </div>
+
+        <div class="formElement">
+          <label for="email">Email:</label>
+          <input type="email" name="email" id="email" />
+        </div>
+
+        <div class="formElement">
+          <label for="phoneNumber">Broj telefona:</label>
+          <input type="text" name="phoneNumber" id="phoneNumber" />
+        </div>
+
+        <div class="formElement">
+          <label for="rememberMe">Zapamti me:</label>
+          <input type="checkbox" name="rememberMe" id="rememberMe" />
+        </div>
+
+        <a href="login.html">Imate račun?</a>
+
+        <div class="formElement">
+          <input type="submit" value="Predaj" />
+        </div>
+      </form>
+    </div>
+
+    <!--JS-->
+
+    <!--<script type="module" src="../js/login.js"></script>-->
+    <script type="module" src="../js/signin.js"></script>
+  </body>
+</html>

@@ -1,2 +1,2 @@
-# PI---class-notes-sharing-platform
+# PI-class-notes-sharing-platform
 A class notes sharing application
