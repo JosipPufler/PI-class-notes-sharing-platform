@@ -90,16 +90,16 @@ function resolveErrors() {
                     alert("User created")
                 }
                 else if(json == "username"){
-                    showError("That username is taken", json)
+                    showError("To korisnicko ime je zauzeto", json)
                 }
                 else if(json == "email"){
-                    showError("That email is taken", json)
+                    showError("Taj mail je zauzet", json)
                 }
                 else if(json == "phone"){
-                    showError("That phone number is taken", json)
+                    showError("Taj broj je zauzet", json)
                 }
                 else if(json == "general"){
-                    showError("There has been an error try again", json)
+                    showError("Dogodila se greška probajte ponovo", json)
                 }
                 else if (json.errorMessages[0] === "User exists!") {
                     showError("Korisnik već postoji")
