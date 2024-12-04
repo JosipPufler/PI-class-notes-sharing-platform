@@ -7,19 +7,36 @@ const lastName = document.getElementById("lastName")
 const firstName = document.getElementById("firstName")
 const confirmPassword = document.getElementById("confirmPassword")
 
-function showError(errorMessage) {
+const components = [username, password, email, phoneNumber, confirmPassword]
+
+function showError(errorMessage, errorType) {
     if (!document.getElementById("errorMessage")) {
-        confirmPassword.insertAdjacentHTML("afterend",
-            `<p id="errorMessage" class="errorMessage">
-                ${errorMessage}
-            </p>`
-        )
-        username.classList.add("error")
-        password.classList.add("error")
-        confirmPassword.classList.add("error")
+        if(errorType == "email"){
+            addError(errorMessage, email)
+        } 
+        else if(errorType == "phone"){
+            addError(errorMessage, phoneNumber)
+        } else if(errorType == "password"){
+            addError(errorMessage, confirmPassword)
+            addError(errorMessage, password)
+        } else if(errorType == "username"){
+            addError(errorMessage, username)
+        } else if (errorType == "general"){
+            components.forEach(x => x.classList.add("error"))
+            addError(errorMessage, phoneNumber)
+        }
     }else{
         document.getElementById("errorMessage").innerHTML = errorMessage
     }
+}
+
+function addError(errorMessage, component){
+    component.insertAdjacentHTML("afterend",
+        `<p id="errorMessage" class="errorMessage">
+            ${errorMessage}
+        </p>`
+    )
+    component.classList.add("error")
 }
 
 function resolveErrors() {
@@ -27,7 +44,9 @@ function resolveErrors() {
         username.classList.remove("error")
         password.classList.remove("error")
         confirmPassword.classList.remove("error")
-        document.getElementById("my-element").remove();
+        email.classList.remove("error")
+        phoneNumber.classList.remove("error")
+        document.getElementById("errorMessage").remove();
     }
 
 }
@@ -66,9 +85,21 @@ function resolveErrors() {
         ).then(res => res.json())
             .then(json => {
                 console.log(json)
-                if (json.isSuccess) {
-                    resolveErrors()
-                    console.log("YESSS")
+                resolveErrors()
+                if (json.id != null) {
+                    alert("User created")
+                }
+                else if(json == "username"){
+                    showError("That username is taken", json)
+                }
+                else if(json == "email"){
+                    showError("That email is taken", json)
+                }
+                else if(json == "phone"){
+                    showError("That phone number is taken", json)
+                }
+                else if(json == "general"){
+                    showError("There has been an error try again", json)
                 }
                 else if (json.errorMessages[0] === "User exists!") {
                     showError("Korisnik već postoji")
