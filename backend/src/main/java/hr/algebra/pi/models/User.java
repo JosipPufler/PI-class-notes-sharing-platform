@@ -2,12 +2,20 @@ package hr.algebra.pi.models;
 
 import hr.algebra.pi.services.PasswordService;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+@Setter
+@Getter
 @Entity
+@AllArgsConstructor
 @Table(name="Users")
+@NoArgsConstructor
 public class User {
     @Id
     @Column(name="id", unique=true, nullable=false)
@@ -28,19 +36,6 @@ public class User {
     @Column(name="phonenumber")
     String phoneNumber;
 
-    public User() {}
-
-    public User(Long id, String username, String passwordHash, String passwordSalt, String firstName, String lastName, String email, String phoneNumber) {
-        this.id = id;
-        this.username = username;
-        this.passwordHash = passwordHash;
-        this.passwordSalt = passwordSalt;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
-
     public User(SignInForm signInForm) {
         this.username = signInForm.getUsername();
         this.firstName = signInForm.getFirstName();
@@ -50,70 +45,6 @@ public class User {
 
         this.passwordSalt = PasswordService.generateNewSalt();
         this.passwordHash = PasswordService.hashStringWithSalt(signInForm.password, this.passwordSalt.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     @Override
