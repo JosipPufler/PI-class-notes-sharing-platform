@@ -14,8 +14,8 @@ import java.util.Arrays;
 @Getter
 @Entity
 @AllArgsConstructor
-@Table(name="Users")
 @NoArgsConstructor
+@Table(name="Users")
 public class User {
     @Id
     @Column(name="id", unique=true, nullable=false)
