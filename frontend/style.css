@@ -437,6 +437,7 @@
   .formElement input[type="text"],
   .formElement input[type="password"],
   .formElement input[type="email"],
+  .formElement input[type="tel"],
   .formElement textarea {
     display: inline-block;
     width: 100%;
@@ -454,6 +455,7 @@
   .form .formElement input[type="text"]:focus,
   .form .formElement input[type="password"]:focus,
   .form .formElement input[type="email"]:focus,
+  .form .formElement input[type="tel"]:focus,
   .form .formElement textarea:focus {
     border-width: 1px;
     border-color: black;
