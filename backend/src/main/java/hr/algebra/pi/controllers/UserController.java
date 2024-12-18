@@ -36,9 +36,18 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
+    @PutMapping
+    public ResponseEntity<String> addInterest(@RequestBody Long userId, Long interestId){
+        try {
+            userService.addInterest(userId, interestId);
+            return new ResponseEntity<>("\"Success\"", HttpStatus.OK);
+        } catch (RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> dataIntegrityViolantionException(final DataIntegrityViolationException e) {
-        String mostSpecificCauseMessage = e.getMostSpecificCause().getMessage();
+    public ResponseEntity<String> dataIntegrityViolationException(final DataIntegrityViolationException e) {
         if (e.getMessage().toLowerCase().contains("users_phonenumber_key")){
             return new ResponseEntity<>("\"phone\"", HttpStatus.CONFLICT);
         }

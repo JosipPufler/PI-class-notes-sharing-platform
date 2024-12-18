@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -35,6 +36,12 @@ public class User {
     String email;
     @Column(name="phonenumber")
     String phoneNumber;
+    @ManyToMany
+    @JoinTable(
+            name = "UserInterest",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "interestId"))
+    public Set<Interest> interests;
 
     public User(SignInForm signInForm) {
         this.username = signInForm.getUsername();

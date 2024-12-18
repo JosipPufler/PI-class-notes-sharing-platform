@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <!--font awsome-->
+    <script
+      src="https://kit.fontawesome.com/e62814bca5.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--custom css-->
+    <link rel="stylesheet" href="../style.css" />
+    <!--select2-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  </head>
+
+  <body>
+    <div class="form" style="width: 60%;">
+      <form id="signInForm">
+        <h2 class="formTitle">Profil</h2>
+        <div class="formElement">
+          <label for="username">Korisničko ime:</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Pero Peric"
+            required="true"
+          />
+        </div>
+
+        <div class="formElement">
+          <label for="password">Lozinka:</label>
+          <input type="password" name="password" id="password" required="true" />
+        </div>
+
+        <div style="display: inline-flex; width: 100%;">
+            <div class="formElement" style="width: 100%; margin-right: 5px;">
+                <label for="firstName">Ime:</label>
+                <input type="text" name="firstName" id="firstName"/>
+              </div>
+      
+              <div class="formElement" style="width: 100%; margin-left: 5px;">
+                <label for="lastName">Prezime:</label>
+                <input type="text" name="lastName" id="lastName" />
+              </div>
+        </div>
+
+        <div style="display: inline-flex; width: 100%;">
+            <div class="formElement" style="width: 100%; margin-right: 5px;">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required="true" />
+              </div>
+      
+              <div class="formElement" style="width: 100%; margin-left: 5px;">
+                <label for="phoneNumber">Broj telefona:</label>
+                <input type="tel" name="phoneNumber" id="phoneNumber" required="true" />
+              </div>
+        </div>
+
+        <div class="formElement">
+            <select class="js-example-basic-multiple" style="width: 100%;" name="interests" multiple="multiple"></select>
+        </div>
+
+        <div class="formElement">
+          <input type="submit" value="Predaj" />
+        </div>
+
+        
+      </form>
+    </div>
+
+    <!--JS-->
+
+    <!--<script type="module" src="../js/login.js"></script>-->
+    <script type="module" src="../js/profile.js"></script>
+  </body>
+</html>

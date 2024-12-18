@@ -5,9 +5,9 @@ const email = document.getElementById("email")
 const phoneNumber = document.getElementById("phoneNumber")
 const lastName = document.getElementById("lastName")
 const firstName = document.getElementById("firstName")
-const confirmPassword = document.getElementById("confirmPassword")
-
-const components = [username, password, email, phoneNumber, confirmPassword]
+let interests
+let user
+const components = [username, password, email, phoneNumber]    
 
 function showError(errorMessage, errorType) {
     resolveErrors()
@@ -17,7 +17,6 @@ function showError(errorMessage, errorType) {
         } else if(errorType == "phone"){
             addError(errorMessage, phoneNumber)
         } else if(errorType == "password"){
-            addError(errorMessage, confirmPassword)
             addError(errorMessage, password)
         } else if(errorType == "username"){
             addError(errorMessage, username)
@@ -43,7 +42,6 @@ function resolveErrors() {
     if (document.getElementById("errorMessage")) {
         username.classList.remove("error")
         password.classList.remove("error")
-        confirmPassword.classList.remove("error")
         email.classList.remove("error")
         phoneNumber.classList.remove("error")
         document.getElementById("errorMessage").remove();
@@ -52,19 +50,45 @@ function resolveErrors() {
 }
 
 (() => {
-    registerForm.addEventListener("submit", (e) => {
-        e.preventDefault()
-        if (confirmPassword.value === password.value) {
-            resolveErrors()
-            register()
-        } else {
-            showError("Lozinke moraju biti iste", "password")
+    fetch(
+        'http://localhost:8080/api/interest',
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
         }
-    })
-
+    ).then(res => res.json())
+        .then(json => {
+            console.log(json)
+            interests = json
+        }
+        ).catch(error => {
+            console.log(error)
+        })
+    
+    fetch(
+        'http://localhost:8080/api/user',
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({id: localStorage.getItem("UserId")})
+        }
+    ).then(res => res.json())
+        .then(json => {
+            console.log(json)
+            user = json
+        }
+        ).catch(error => {
+            console.log(error)
+        })
+    
 
     function register() {
-        const registerData = {
+        const profileData = {
+            id: localStorage.getItem("UserId"),
             username: username.value,
             password: password.value,
             firstName: firstName.value,
@@ -76,11 +100,11 @@ function resolveErrors() {
         return fetch(
             'http://localhost:8080/api/user',
             {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(registerData)
+                body: JSON.stringify(profileData)
             }
         ).then(res => res.json())
             .then(json => {
@@ -88,7 +112,7 @@ function resolveErrors() {
                 if (json.id != null) {
                     alert("User created")
                     localStorage.setItem("UserId", json.id)
-                    window.location.href="../html/createInterest.html"
+                    window.location.href="../html/profile.html"
                 }
                 else if(json == "username"){
                     showError("To korisnicko ime je zauzeto", json)
@@ -115,3 +139,17 @@ function resolveErrors() {
 
 }
 )()
+
+$(document).ready(function() {
+    let userInterests = user.interests
+    let currentInterest = false
+    $('.js-example-basic-multiple').select2();
+    for(var interest in interests){
+        if(userInterests.filter(e => e.name === interest.name).length > 0){
+            currentInterest = true
+        } else {
+            currentInterest = false
+        }
+        $('#interests').append(new Option(interest.name, interest.id, currentInterest, false)).trigger('change')
+    }
+});

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RegisterInterest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <!--font awsome-->
+    <script
+      src="https://kit.fontawesome.com/e62814bca5.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--custom css-->
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <div class="form">
+      <form id="interestForm">
+        <h2 class="formTitle">Novi interes</h2>
+        <div class="formElement">
+          <label for="name">Ime interesa:</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            required="true"
+          />
+        </div>
+
+        <div class="formElement">
+            <label for="interest">Nad interes:</label>
+            <select class="js-example-basic-single" style="width: 100%;" name="interest"></select>
+        </div>
+
+        <div class="formElement">
+          <input type="submit" value="Predaj" />
+        </div>
+      </form>
+    </div>
+
+    <!--JS-->
+
+    <!--<script type="module" src="../js/login.js"></script>-->
+    <script type="module" src="../js/signin.js"></script>
+  </body>
+</html>
