@@ -1,6 +1,5 @@
 package hr.algebra.pi.services;
 
-import hr.algebra.pi.models.Interest;
 import hr.algebra.pi.models.User;
 import hr.algebra.pi.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,10 @@ import java.util.Optional;
 @Transactional
 public class UserService {
     private final UserRepo userRepo;
-    private final InterestService interestService;
 
     @Autowired
     public UserService(UserRepo userRepo, InterestService interestService) {
         this.userRepo = userRepo;
-        this.interestService = interestService;
     }
 
     public User createUser(User user) {
@@ -30,7 +27,24 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public User addInterest(Long userId, Long interestId) {
+    public Optional<User> getUser(Long id) {
+        return userRepo.findById(id);
+    }
+
+    public void updateUser(User user) {
+        userRepo.saveAndFlush(user);
+    }
+
+    public Boolean deactivateUser(Long id) {
+        Optional<User> user = userRepo.findById(id);
+        if (user.isPresent()) {
+            user.get().setActive(false);
+            return true;
+        }
+        return false;
+    }
+
+    /*public User addInterest(Long userId, Long interestId) {
         Optional<User> user = userRepo.findById(userId);
         if (user.isPresent()) {
             Optional<Interest> interest = interestService.getInterest(interestId);
@@ -44,5 +58,5 @@ public class UserService {
         } else {
             throw new RuntimeException("User not found");
         }
-    }
+    }*/
 }

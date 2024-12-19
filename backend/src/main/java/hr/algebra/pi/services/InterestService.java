@@ -30,4 +30,9 @@ public class InterestService {
     public Optional<Interest> getInterest(Long id) {return interestRepo.findById(id);}
 
     public Interest updateInterest(Interest interest) { return interestRepo.saveAndFlush(interest); }
+
+    public void deleteInterest(Long id) {
+        interestRepo.deleteById(id);
+        interestRepo.flush();
+    }
 }

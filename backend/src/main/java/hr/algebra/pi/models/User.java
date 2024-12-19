@@ -1,21 +1,19 @@
 package hr.algebra.pi.models;
 
-import hr.algebra.pi.services.PasswordService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Setter
 @Getter
 @Entity
 @AllArgsConstructor
-@Table(name="Users")
+@Table(name= "user", schema = "public")
 @NoArgsConstructor
 public class User {
     @Id
@@ -34,25 +32,18 @@ public class User {
     String lastName;
     @Column(name="email")
     String email;
-    @Column(name="phonenumber")
+    @Column(name="phoneNumber")
     String phoneNumber;
+    @Column(name="active")
+    boolean active;
+    @Column(name="settings")
+    String settings;
     @ManyToMany
     @JoinTable(
             name = "UserInterest",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "interestId"))
-    public Set<Interest> interests;
-
-    public User(SignInForm signInForm) {
-        this.username = signInForm.getUsername();
-        this.firstName = signInForm.getFirstName();
-        this.lastName = signInForm.getLastName();
-        this.email = signInForm.getEmail();
-        this.phoneNumber = signInForm.getPhoneNumber();
-
-        this.passwordSalt = PasswordService.generateNewSalt();
-        this.passwordHash = PasswordService.hashStringWithSalt(signInForm.password, this.passwordSalt.getBytes(StandardCharsets.UTF_8));
-    }
+    public Set<Interest> interests = new HashSet<>();
 
     @Override
     public String toString() {

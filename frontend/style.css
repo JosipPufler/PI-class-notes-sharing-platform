@@ -396,7 +396,8 @@
   }
   
   .form .formElement input[type="submit"],
-  .tableElement input[type="button"].delete {
+  .tableElement input[type="button"].delete,
+  input[type="button"].delete {
     margin-top: 5px;
     margin-bottom: 5px;
     vertical-align: middle;
@@ -417,7 +418,8 @@
     color: black;
   }
   
-  .tableElement input[type="button"].delete:hover {
+  .tableElement input[type="button"].delete:hover,
+  input[type="button"].delete:hover {
     background-color: red;
     color: black;
   }

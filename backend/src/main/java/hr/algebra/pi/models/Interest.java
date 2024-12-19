@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Entity
 @AllArgsConstructor
-@Table(name="Interests")
+@Table(name= "interest")
 @NoArgsConstructor
 public class Interest {
     @Id
@@ -22,10 +22,10 @@ public class Interest {
     @Column(name="name", unique=true, nullable=false)
     public String name;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parentInterestId")
+    @JoinColumn(name = "parent_interest_id")
     public Interest parentInterest;
 
 
-    @ManyToMany(mappedBy = "UserInterests")
+    @ManyToMany(mappedBy = "interests")
     public Set<User> interestedUsers;
 }

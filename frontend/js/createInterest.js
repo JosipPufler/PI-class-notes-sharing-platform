@@ -1,3 +1,4 @@
+const interestForm = document.getElementById("interestForm")
 const interestName = document.getElementById("name")
 let interests
 
@@ -19,6 +20,77 @@ function resolveErrors() {
 }
 
 (() => {
+    interestForm.addEventListener("submit", (e) => {
+        e.preventDefault()
+        create()
+    })
+    
+
+    function create() {
+        console.log($('#interest').val())
+        let parentId = null
+        if($('#interest').select2('data').length == 1){
+            if($('#interest').val() != "null")
+                parentId = $('#interest').val()
+        }
+        console.log(parentId)
+        const interestData = {
+            name: interestName.value,
+            parentInterestId: Number(parentId),
+        }
+        
+        let status
+
+        fetch(
+            'http://localhost:8080/api/interest',
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(interestData)
+            }
+        ).then(res => {
+            resolveErrors()
+            if(res.ok)
+                return res.json()
+            throw new Error(res.status)
+        }).then(json => {
+                console.log(json)
+                if (json.id != null) {
+                    alert("Interest created")
+                    window.location.href="../html/profile.html"
+                }else{
+                    alert("Unexpected error")
+                }
+                return true
+            }
+            ).catch(error => {
+                if(Number(error.errorMessage) == 409)
+                    console.log("Error")
+                    addError("Taj interest vec postoji", interestName)
+                return false
+            })
+    }
+
+}
+)()
+
+$(document).ready(function() {
+    $('.js-example-basic-single').select2({
+        matcher: function(params, data) {
+            if ($.trim(params.term) === '') { return data; }
+    
+            if (typeof data.text === 'undefined') { return null; }
+        
+            var q = params.term.toLowerCase();
+            if (data.text.toLowerCase().indexOf(q) > -1 || data.id.toLowerCase().indexOf(q) > -1) {
+                return $.extend({}, data, true);
+            }
+    
+            return null;
+        }
+    });
     fetch(
         'http://localhost:8080/api/interest',
         {
@@ -35,83 +107,10 @@ function resolveErrors() {
         ).catch(error => {
             console.log(error)
         }
-    )
-    
-
-    function create() {
-        if($('#interest').select2('data').length == 1){
-            const interestData = {
-                name: interestName.value,
-                parentId: $('#interest').select2('data')[0].value,
-            }
-        }else{
-            return false
+    ).then( () => {
+        for(var i in interests){
+            let interestData = interests[i]
+            $('#interest').append(new Option(interestData.name, interestData.id, false, false)).trigger('change')
         }
-        
-
-        return fetch(
-            'http://localhost:8080/api/interest',
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(interestData)
-            }
-        ).then(res => res.json())
-            .then(json => {
-                console.log(json)
-                if (json.id != null) {
-                    alert("Interest created")
-                    window.location.href="../html/profile.html"
-                }
-                else if(json == "name"){
-                    addError("Taj interest vec postoji", interestName)
-                }else{
-                    alert("Unexpected error")
-                }
-                return true
-            }
-            ).catch(error => {
-                console.log(error)
-                return false
-            })
-    }
-
-}
-)()
-
-function matchStart(params, data) {
-    if ($.trim(params.term) === '') {
-      return data;
-    }
-  
-    if (typeof data.children === 'undefined') {
-      return null;
-    }
-  
-    var filteredChildren = [];
-    $.each(data.children, function (idx, child) {
-      if (child.text.toUpperCase().indexOf(params.term.toUpperCase()) == 0) {
-        filteredChildren.push(child);
-      }
-    });
-  
-    if (filteredChildren.length) {
-      var modifiedData = $.extend({}, data, true);
-      modifiedData.children = filteredChildren;
-  
-      return modifiedData;
-    }
-  
-    return null;
-  }
-
-$(document).ready(function() {
-    $('.js-example-basic-multiple').select2({
-        matcher: matchStart
-    });
-    for(var interest in interests){
-        $('#interests').append(new Option(interest.name, interest.id, false, false)).trigger('change')
-    }
+    })
 });
