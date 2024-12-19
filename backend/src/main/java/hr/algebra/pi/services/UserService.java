@@ -15,7 +15,7 @@ public class UserService {
     private final UserRepo userRepo;
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, InterestService interestService) {
         this.userRepo = userRepo;
     }
 
@@ -26,4 +26,37 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
+
+    public Optional<User> getUser(Long id) {
+        return userRepo.findById(id);
+    }
+
+    public void updateUser(User user) {
+        userRepo.saveAndFlush(user);
+    }
+
+    public Boolean deactivateUser(Long id) {
+        Optional<User> user = userRepo.findById(id);
+        if (user.isPresent()) {
+            user.get().setActive(false);
+            return true;
+        }
+        return false;
+    }
+
+    /*public User addInterest(Long userId, Long interestId) {
+        Optional<User> user = userRepo.findById(userId);
+        if (user.isPresent()) {
+            Optional<Interest> interest = interestService.getInterest(interestId);
+            if (interest.isPresent()) {
+                user.get().getInterests().add(interest.get());
+                userRepo.saveAndFlush(user.get());
+                return user.get();
+            }else{
+                throw new RuntimeException("Interest not found");
+            }
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }*/
 }

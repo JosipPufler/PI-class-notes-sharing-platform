@@ -396,7 +396,8 @@
   }
   
   .form .formElement input[type="submit"],
-  .tableElement input[type="button"].delete {
+  .tableElement input[type="button"].delete,
+  input[type="button"].delete {
     margin-top: 5px;
     margin-bottom: 5px;
     vertical-align: middle;
@@ -417,7 +418,8 @@
     color: black;
   }
   
-  .tableElement input[type="button"].delete:hover {
+  .tableElement input[type="button"].delete:hover,
+  input[type="button"].delete:hover {
     background-color: red;
     color: black;
   }
@@ -438,6 +440,7 @@
   .formElement input[type="password"],
   .formElement input[type="email"],
   .formElement input[type="tel"],
+  .formElement select,
   .formElement textarea {
     display: inline-block;
     width: 100%;
@@ -456,6 +459,7 @@
   .form .formElement input[type="password"]:focus,
   .form .formElement input[type="email"]:focus,
   .form .formElement input[type="tel"]:focus,
+  .form .formElement select:focus,
   .form .formElement textarea:focus {
     border-width: 1px;
     border-color: black;
@@ -510,7 +514,8 @@
     color: red;
   }
   
-  .form .formElement input[type="checkbox"] {
+  .form .formElement input[type="checkbox"],
+  .form .formElement select {
     cursor: pointer;
     border-radius: 5px;
     border-style: solid;

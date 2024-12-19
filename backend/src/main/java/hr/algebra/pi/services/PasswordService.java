@@ -9,9 +9,9 @@ import java.security.spec.KeySpec;
 import java.util.Random;
 
 public final class PasswordService {
-    private static Random RANDOM = new SecureRandom();
-    private static int KEY_LENGTH = 256;
-    private static int ITERATIONS = 65536;
+    private static final Random RANDOM = new SecureRandom();
+    private static final int KEY_LENGTH = 256;
+    private static final int ITERATIONS = 65536;
 
     private PasswordService(){}
 
