@@ -14,7 +14,7 @@ public class MaterialServiceImpl {
     private MaterialRepository materialRepository;
 
     @Autowired
-    private UserService userService; // Assuming a service exists for User management
+    private UserService userService;
 
     public Material saveMaterial(Material material) {
         return materialRepository.save(material);
@@ -31,5 +31,9 @@ public class MaterialServiceImpl {
 
     public User findUserById(Long id) {
         return userService.findById(id);
+    }
+
+    public void deleteMaterialById(Long id) {
+         materialRepository.deleteById(id);
     }
 }
