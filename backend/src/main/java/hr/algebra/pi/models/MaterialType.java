@@ -1,8 +1,16 @@
 package hr.algebra.pi.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+    @Entity
     @Table(name = "MaterialType")
     public class MaterialType {
 
@@ -19,38 +27,7 @@ import jakarta.persistence.*;
         @Column(nullable = false)
         private String extension;
 
-        // Getters and Setters
 
-        public Long getId() {
-            return id;
-        }
 
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String getExtension() {
-            return extension;
-        }
-
-        public void setExtension(String extension) {
-            this.extension = extension;
-        }
     }
 
