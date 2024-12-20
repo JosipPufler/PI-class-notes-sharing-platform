@@ -1,4 +1,181 @@
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Materials List Styles */
+.materials-list {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#materialsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.material-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.material-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.material-item h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.material-item p {
+    margin: 0 0 15px 0;
+    color: #666;
+}
+
+/* Form Styles */
+.form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.formElement {
+    margin-bottom: 1.5rem;
+}
+
+.formElement label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: 600;
+}
+
+.formElement input[type="text"],
+.formElement textarea,
+.formElement select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.formElement input[type="text"]:focus,
+.formElement textarea:focus,
+.formElement select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.formElement input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.formElement input[type="submit"]:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+}
+
+/* Modern Button Styles */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.edit-button, .delete-btn, .secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+}
+
+.edit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+}
+
+.edit-button:active {
+    transform: translateY(0);
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+.delete-btn:active {
+    transform: translateY(0);
+}
+
+.secondary-button {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #dee2e6;
+}
+
+.secondary-button:hover {
+    background-color: #e9ecef;
+    color: #495057;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 :root {
     --cream-white: #ddd;
     --light-grey: #505050;
@@ -354,15 +531,56 @@
   }
   
   .form {
-    align-items: center;
     position: fixed;
     top: 50vh;
     left: 50vw;
     transform: translate(-50%, -50%);
+    max-width: 800px;
+    width: 90%;
+    padding: 30px 40px;
     background: white;
-    z-index: 12;
-    padding: 20px 30px;
     border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 12;
+  }
+  
+  .form .formTitle {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  
+  .formElement {
+    margin-bottom: 20px;
+  }
+  
+  .formElement label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .formElement input[type="text"],
+  .formElement input[type="password"],
+  .formElement input[type="email"],
+  .formElement input[type="tel"],
+  .formElement select,
+  .formElement textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .formElement input:focus,
+  .formElement textarea:focus,
+  .formElement select:focus {
+    border-color: #4CAF50;
+    outline: none;
   }
   
   .dropdown-content {
@@ -380,10 +598,6 @@
     top: 55px;
     left: unset;
     padding: 0;
-  }
-  
-  .formElement {
-    margin-bottom: 10px;
   }
   
   .formElement.inlineElements {
@@ -436,35 +650,6 @@
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
   }
   
-  .formElement input[type="text"],
-  .formElement input[type="password"],
-  .formElement input[type="email"],
-  .formElement input[type="tel"],
-  .formElement select,
-  .formElement textarea {
-    display: inline-block;
-    width: 100%;
-    border-radius: 4px;
-    outline: none;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #aaa;
-    padding: 10px;
-    font-size: 15px;
-    word-wrap: break-word;
-    resize: horizontal;
-  }
-  
-  .form .formElement input[type="text"]:focus,
-  .form .formElement input[type="password"]:focus,
-  .form .formElement input[type="email"]:focus,
-  .form .formElement input[type="tel"]:focus,
-  .form .formElement select:focus,
-  .form .formElement textarea:focus {
-    border-width: 1px;
-    border-color: black;
-  }
-  
   .form .formElement input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -504,7 +689,6 @@
   
   .error {
     animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-    border-width: 1px;
     border-color: red !important;
     color: red !important;
   }
@@ -525,13 +709,12 @@
   }
   
   .popUpBackground {
-    position: fixed;
-    top: 0vh;
-    left: 0vw;
-    width: 100%;
-    height: 100%;
-    z-index: 11;
-    background-color: rgba(36, 32, 34, 0.95);
+    display: none; /* This will be controlled by JS */
+    margin: 2rem 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
   
   .right {
@@ -852,5 +1035,277 @@
     50% {
       border-color: white;
     }
+  }
+  
+  .materials-list {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  #materialsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    width: 100%;
+  }
+  
+  .material-item {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .material-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .material-item h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+  }
+  
+  .material-item p {
+    margin: 0 0 15px 0;
+    color: #666;
+  }
+  
+  .material-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  
+  /* Desktop layout for the create form and materials list */
+  @media screen and (min-width: 1200px) {
+    body:not(.edit-document-body) {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+        gap: 20px;
+        padding: 20px;
+        background-color: #f5f5f5;
+    }
+
+    body:not(.edit-document-body) .form {
+        position: sticky;
+        top: 20px;
+        height: fit-content;
+        margin: 0;
+        transform: none;
+        left: auto;
+    }
+
+    body:not(.edit-document-body) .materials-list {
+        margin: 0;
+        padding: 0;
+    }
+
+    body:not(.edit-document-body) .materials-list h2 {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    /* Edit page specific desktop styles */
+    .edit-document-body {
+        display: block;
+        padding: 0;
+    }
+
+    .edit-form-container {
+        max-width: 80%;
+        width: 80%;
+        margin: 2rem auto;
+        padding: 0;
+    }
+
+    .edit-form {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        width: 100%;
+    }
+
+    .edit-form textarea {
+        min-height: 600px !important;
+        width: 100%;
+    }
+  }
+  
+  /* Edit Document Page Styles */
+  .edit-document-body {
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .top-nav {
+    background-color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+  }
+  
+  .top-nav h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .back-button {
+    background-color: transparent;
+    border: none;
+    color: #4CAF50;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    color: #45a049;
+  }
+  
+  .edit-form-container {
+    flex: 1;
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .edit-form {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    left: auto !important;
+    top: auto !important;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+  
+  .edit-form .formElement {
+    width: 100%;
+  }
+  
+  .edit-form textarea,
+  .edit-form input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Responsive adjustments for edit form */
+  @media screen and (max-width: 768px) {
+    .edit-form-container {
+        padding: 1rem;
+        margin: 0;
+        width: 100%;
+    }
+    
+    .top-nav {
+        padding: 1rem;
+    }
+    
+    .top-nav h1 {
+        font-size: 1.2rem;
+    }
+
+    .edit-form textarea {
+        min-height: 400px !important;
+    }
+  }
+  
+  /* Modern Button Styles */
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .edit-button, .delete-btn, .secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+  }
+
+  .edit-button {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .edit-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
+  }
+
+  .edit-button:active {
+    transform: translateY(0);
+  }
+
+  .delete-btn {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .delete-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+  }
+
+  .delete-btn:active {
+    transform: translateY(0);
+  }
+
+  .secondary-button {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 2px solid #dee2e6;
+  }
+
+  .secondary-button:hover {
+    background-color: #e9ecef;
+    color: #495057;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .secondary-button:active {
+    transform: translateY(0);
   }
   

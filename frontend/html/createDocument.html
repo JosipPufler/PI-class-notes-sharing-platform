@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/e62814bca5.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../css/documentStyle.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  </head>
+  <body>
+    <div class="form">
+      <form id="createDocumentForm" enctype="multipart/form-data">
+        <h2 class="formTitle">Create New Document</h2>
+        
+        <div class="formElement">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            required="true"
+          />
+        </div>
+
+        <div class="formElement">
+          <label for="description">Description:</label>
+          <textarea
+            name="description"
+            id="description"
+            required="true"
+            style="min-height: 100px; resize: vertical;"
+          ></textarea>
+        </div>
+
+        <div class="formElement">
+          <label for="materialType">Material Type:</label>
+          <select class="js-example-basic-single" style="width: 100%;" name="materialTypeId" id="materialType" required="true">
+          </select>
+        </div>
+
+        <input type="hidden" name="userId" id="userId" value="1" />
+
+        <div class="formElement">
+          <input type="submit" value="Create Document" />
+        </div>
+      </form>
+    </div>
+
+    <div class="materials-list">
+      <h2>Existing Materials</h2>
+      <div id="materialsList">
+      </div>
+    </div>
+
+    <!--JS-->
+    <script type="module" src="../js/createDocument.js"></script>
+  </body>
+</html> 

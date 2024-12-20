@@ -10,11 +10,11 @@ const confirmPassword = document.getElementById("confirmPassword")
 const components = [username, password, email, phoneNumber, confirmPassword]
 
 function showError(errorMessage, errorType) {
+    resolveErrors()
     if (!document.getElementById("errorMessage")) {
         if(errorType == "email"){
             addError(errorMessage, email)
-        } 
-        else if(errorType == "phone"){
+        } else if(errorType == "phone"){
             addError(errorMessage, phoneNumber)
         } else if(errorType == "password"){
             addError(errorMessage, confirmPassword)
@@ -58,7 +58,7 @@ function resolveErrors() {
             resolveErrors()
             register()
         } else {
-            showError("Lozinke moraju biti iste")
+            showError("Lozinke moraju biti iste", "password")
         }
     })
 
@@ -85,9 +85,10 @@ function resolveErrors() {
         ).then(res => res.json())
             .then(json => {
                 console.log(json)
-                resolveErrors()
                 if (json.id != null) {
                     alert("User created")
+                    localStorage.setItem("UserId", json.id)
+                    window.location.href="../html/createInterest.html"
                 }
                 else if(json == "username"){
                     showError("To korisnicko ime je zauzeto", json)

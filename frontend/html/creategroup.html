@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Create group</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+            rel="stylesheet"
+        />
+        <script
+            src="https://kit.fontawesome.com/e62814bca5.js"
+            crossorigin="anonymous"
+        ></script>
+        <link rel="stylesheet" href="../style.css" />
+    </head>
+    <body>
+        <div class="form">
+            <form id="createGroupForm">
+                <h2 class="formTitle">Kreirajte grupu</h2>
+                <div class="formElement">
+                    <label for="name">Ime grupe:</label>
+                    <input type="text" name="name" id="name" required="true" />
+                </div>
+                <div class="formElement">
+                    <label for="description">Opis grupe:</label>
+                    <textarea
+                        type="text"
+                        name="description"
+                        id="description"
+                        style="resize: none"
+                    ></textarea>
+                </div>
+                <div class="formElement">
+                    <input type="submit" value="Kreiraj" />
+                </div>
+            </form>
+        </div>
+        <script type="module" src="../js/creategroup.js"></script>
+    </body>
+</html>
