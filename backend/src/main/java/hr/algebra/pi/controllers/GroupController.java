@@ -43,4 +43,14 @@ public class GroupController {
         return new ResponseEntity<>("\"general\"", HttpStatus.CONFLICT);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Group> getGroupById(@PathVariable Long id) {
+        Group group = groupService.getGroupById(id);
+        if (group != null) {
+            return ResponseEntity.ok(group);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

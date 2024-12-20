@@ -50,6 +50,7 @@ function resolveErrors() {
                 resolveErrors();
                 if (json.id != null) {
                     alert("Group created successfully");
+                    window.location.href = `groupview.html?id=${json.id}`;
                 } else if (json == "name") {
                     showError("To ime grupe je zauzeto", json);
                 }

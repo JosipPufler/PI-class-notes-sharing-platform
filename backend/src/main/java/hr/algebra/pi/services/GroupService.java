@@ -23,4 +23,8 @@ public class GroupService {
     public List<Group> getAllGroups() {
         return groupRepo.findAll();
     }
+
+    public Group getGroupById(Long id) {
+        return groupRepo.findById(id).orElse(null);
+    }
 }
