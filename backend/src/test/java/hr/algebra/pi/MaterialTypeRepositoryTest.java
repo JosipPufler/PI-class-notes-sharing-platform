@@ -10,12 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-class ProgramskoInzenjerstvoApplicationTests {
+public class MaterialTypeRepositoryTest {
+
+	@Autowired
+	private MaterialTypeRepository materialTypeRepository;
 
 	@Test
-	void contextLoads() {
+	public void testFindAll() {
+		List<MaterialType> materialTypes = materialTypeRepository.findAll();
+		Assertions.assertFalse(materialTypes.isEmpty(), "Podaci bi trebali biti vraćeni");
 	}
-
-
-
 }

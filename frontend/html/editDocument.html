@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/e62814bca5.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../css/documentStyle.css" />
+  </head>
+  <body class="edit-document-body">
+    <nav class="top-nav">
+      <button onclick="window.location.href='createDocument.html'" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Documents
+      </button>
+      <h1>Edit Document</h1>
+    </nav>
+
+    <div class="edit-form-container">
+      <form id="editDocumentForm" class="edit-form">
+        <div class="formElement">
+          <label for="name">Document Name:</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            required="true"
+            readonly
+          />
+        </div>
+
+        <div class="formElement">
+          <label for="content">Document Content:</label>
+          <textarea
+            name="content"
+            id="content"
+            required="true"
+            style="min-height: 500px; resize: vertical; font-family: 'Courier New', monospace; font-size: 14px;"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" onclick="window.location.href='createDocument.html'" class="secondary-button">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button type="submit" class="edit-button">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!--JS-->
+    <script type="module" src="../js/editDocument.js"></script>
+  </body>
+</html> 

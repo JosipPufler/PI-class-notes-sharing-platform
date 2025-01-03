@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group view</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/e62814bca5.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            margin-bottom: 20px; /* Added margin */
+        }
+
+        h1 {
+            font-size: 2em;
+            margin: 0;
+            position: absolute;
+            left: 40px; /* Increased padding */
+        }
+
+        #searchBar {
+            width: 500px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 20px; /* Added padding from top */
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        #materialsContainer {
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 20px;
+        }
+
+        #materialsList {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            margin: 0;
+        }
+
+        #materialsList li {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 20px; /* Added margin */
+        }
+
+        #addMaterialButton {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        #addMaterialButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 id="groupName">Group Name</h1>
+    <input type="text" id="searchBar" placeholder="Search materials..." />
+    <input type="file" id="fileInput" style="display: none;" />
+</header>
+<main>
+    <div id="materialsContainer">
+        <ul id="materialsList">
+            <li>Material 1</li>
+            <li>Material 2</li>
+            <li>Material 3</li>
+        </ul>
+        <button id="addMaterialButton">Add Materials</button>
+    </div>
+</main>
+<script src="../js/groupview.js"></script>
+</body>
+</html>
