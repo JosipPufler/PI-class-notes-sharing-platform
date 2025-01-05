@@ -10,13 +10,14 @@
             href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
             rel="stylesheet"
         />
-        <script
-            src="https://kit.fontawesome.com/e62814bca5.js"
-            crossorigin="anonymous"
-        ></script>
+        <!--font awsome-->
+        <script src="https://kit.fontawesome.com/e62814bca5.js" crossorigin="anonymous"></script>
+        
         <link rel="stylesheet" href="../style.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </head>
-    <body>
+    <body class="needAuthentication">
+        <div id="includeNavbar" style="width: 100%;"></div>
         <div class="form">
             <form id="createGroupForm">
                 <h2 class="formTitle">Kreirajte grupu</h2>
@@ -39,5 +40,7 @@
             </form>
         </div>
         <script type="module" src="../js/creategroup.js"></script>
+        <script type="module" src="../js/nav.js"></script>
+        <script type="module" src="../js/tokenValidator.js"></script>
     </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <!--font awsome-->
+    <script
+      src="https://kit.fontawesome.com/e62814bca5.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--custom css-->
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+
+    <form class="form" id="logInForm">
+      <h2 class="formTitle">Prijavite se</h2>
+      <div class="formElement">
+        <label for="username">Korisničko ime:</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Pero Peric"
+          required="true"
+        />
+      </div>
+
+      <div class="formElement">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required="true" />
+      </div>
+
+      <div class="formElement">
+        <label for="rememberMe">Zapamti me:</label>
+        <input type="checkbox" name="rememberMe" id="rememberMe" />
+      </div>
+
+      <a href="signin.html">Nemate račun?</a>
+
+      <div class="formElement">
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+    <!--JS-->
+    <script type="module" src="../js/login.js"></script>
+  </body>
+</html>

@@ -1,5 +1,8 @@
 package hr.algebra.pi.services;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -22,6 +25,9 @@ public final class PasswordService {
     }
 
     public static String hashStringWithSalt(String startingPassword, byte[] salt){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        bCryptPasswordEncoder.encode(startingPassword);
+
         KeySpec spec = new PBEKeySpec(startingPassword.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");

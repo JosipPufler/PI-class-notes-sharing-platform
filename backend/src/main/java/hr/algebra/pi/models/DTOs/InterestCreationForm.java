@@ -1,4 +1,4 @@
-package hr.algebra.pi.models;
+package hr.algebra.pi.models.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

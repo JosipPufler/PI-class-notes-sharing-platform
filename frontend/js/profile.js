@@ -1,3 +1,5 @@
+import { getUserId, getToken, getTokenType, getUsername, generateAuthorization } from "./tokenValidator.js"
+
 const updateForm = document.getElementById("updateForm")
 const username = document.getElementById("username")
 const password = document.getElementById("password")
@@ -6,10 +8,50 @@ const phoneNumber = document.getElementById("phoneNumber")
 const lastName = document.getElementById("lastName")
 const firstName = document.getElementById("firstName")
 const btnDelete = document.getElementById("btnDelete")
+const spanX = document.getElementById("spanX")
 let interests
 let responseStatus
 let user
 const components = [username, password, email, phoneNumber]    
+
+var popUpActive = false;
+const confirmPopUp = document.getElementById("confirmPopUp");
+const popUpForm = document.getElementById("popUpForm")
+
+confirmPopUp.style.display = "none";
+document.body.style.overflow = "auto"
+
+
+function toggleContactPopup() {
+    if (popUpActive) {
+        confirmPopUp.style.display = "none";
+        document.body.style.overflow = "auto"
+    } else {
+        confirmPopUp.style.display = "block";
+        document.body.style.overflow = "hidden"
+    }
+    popUpActive = !popUpActive;
+}
+
+btnDelete.onclick = function(){toggleContactPopup()}
+spanX.onclick = function(){toggleContactPopup()}
+
+document.onkeydown = function (evt) {
+    let isEscape = false;
+    if ("key" in evt) {
+        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+    }
+    if (isEscape && popUpActive) {
+        toggleContactPopup()
+    }
+};
+
+if (popUpForm) {
+    popUpForm.addEventListener("submit", (e) => {
+        deleteUser()        
+        toggleContactPopup()
+    })
+}
 
 function loadUser(user){
     username.value = user.username
@@ -19,14 +61,15 @@ function loadUser(user){
     firstName.value = user.firstName
 }
 
-btnDelete.onclick = function deleteUser(){
+function deleteUser(){
     return fetch(
-        'http://localhost:8080/api/user/14',
+        'http://localhost:8080/api/user/' + getUserId(),
         {
             method: "Delete",
             headers: {
-                "Content-Type": "application/json"
-            }
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
+            }   
         }
     ).then(res => {
         if(res.ok){
@@ -102,11 +145,12 @@ function resolveErrors() {
         console.log(JSON.stringify(profileData))
 
         return fetch(
-            'http://localhost:8080/api/user/1',
+            'http://localhost:8080/api/user/' + getUserId(),
             {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": generateAuthorization()
                 },
                 body: JSON.stringify(profileData)
             }
@@ -156,7 +200,8 @@ $(document).ready(function() {
         {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
             }
         }
     ).then(res => res.json())
@@ -168,12 +213,12 @@ $(document).ready(function() {
             console.log(error)
         }).then(() =>{
             fetch(
-                //'http://localhost:8080/api/user/' + localStorage.getItem("UserId"),
-                'http://localhost:8080/api/user/1',
+                'http://localhost:8080/api/user/' + getUserId(),
                 {
                     method: "GET",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": generateAuthorization()
                     }
                 }
             ).then(res => res.json())

@@ -1,3 +1,5 @@
+import { generateAuthorization } from "./tokenValidator.js"
+
 const createGroupForm = document.getElementById("createGroupForm");
 const nameGroup = document.getElementById("name");
 const description = document.getElementById("description");
@@ -41,6 +43,7 @@ function resolveErrors() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
             },
             body: JSON.stringify(groupData),
         })

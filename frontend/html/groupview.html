@@ -94,8 +94,12 @@
             background-color: #0056b3;
         }
     </style>
+    
+    <link rel="stylesheet" href="../style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body>
+<body class="needAuthentication">
+    <div id="includeNavbar" style="width: 100%;"></div>
 <header>
     <h1 id="groupName">Group Name</h1>
     <input type="text" id="searchBar" placeholder="Search materials..." />
@@ -111,6 +115,8 @@
         <button id="addMaterialButton">Add Materials</button>
     </div>
 </main>
-<script src="../js/groupview.js"></script>
+<script type="module" src="../js/groupview.js"></script>
+<script type="module" src="../js/nav.js"></script>
+<script type="module" src="../js/tokenValidator.js"></script>
 </body>
 </html>

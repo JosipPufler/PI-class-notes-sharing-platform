@@ -17,7 +17,7 @@ public class SignInForm {
     String phoneNumber;
     String firstName;
     String lastName;
-    List<Long> interests;
+    List<Long> interests = new ArrayList<>();
 
     SignInForm(String username, String password, String email, String phoneNumber, String firstName, String lastName){
         this(username, password, email, phoneNumber, firstName, lastName, new ArrayList<>());
