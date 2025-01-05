@@ -1,3 +1,5 @@
+import { getUserId, getToken, getTokenType, getUsername, generateAuthorization } from "./tokenValidator.js"
+
 const editForm = document.getElementById("editDocumentForm");
 const nameInput = document.getElementById("name");
 const contentInput = document.getElementById("content");
@@ -38,7 +40,8 @@ if (!materialId) {
 fetch(`http://localhost:8080/api/materials/${materialId}`, {
     method: "GET",
     headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": generateAuthorization()
     }
 })
 .then(res => res.json())
@@ -47,7 +50,14 @@ fetch(`http://localhost:8080/api/materials/${materialId}`, {
     nameInput.value = material.name;
     
     
-    return fetch(`http://localhost:8080/api/materials/download/${material.name}.txt`);
+    return fetch(`http://localhost:8080/api/materials/download/${material.name}.txt`,
+        {
+            method: "GET",
+            headers: {
+                "Authorization": generateAuthorization()
+            }
+        }
+    );
 })
 .then(res => {
     if (!res.ok) {
@@ -88,8 +98,10 @@ function saveDocument() {
     
     fetch(`http://localhost:8080/api/materials/${materialId}`, {
         method: "PUT",
+        headers: {
+                "Authorization": generateAuthorization()
+            },
         body: formData,
-        
     })
     .then(res => {
         if (!res.ok) {

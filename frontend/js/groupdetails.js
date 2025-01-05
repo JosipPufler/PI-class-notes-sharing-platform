@@ -1,3 +1,5 @@
+import { getUserId, getToken, getTokenType, getUsername, generateAuthorization } from "./tokenValidator.js"
+
 document.addEventListener("DOMContentLoaded", () => {
     const groupNameElement = document.getElementById("groupName");
     const groupDescriptionElement = document.getElementById("groupDescription");
@@ -6,7 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const groupId = new URLSearchParams(window.location.search).get("id");
 
-    fetch(`http://localhost:8080/api/group/${groupId}`)
+    fetch(`http://localhost:8080/api/group/${groupId}`, 
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
+            }
+            
+        }
+    )
         .then(response => response.json())
         .then(group => {
             groupNameElement.textContent = group.name;

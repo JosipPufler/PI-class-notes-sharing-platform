@@ -22,10 +22,8 @@ public class User {
     private Long id;
     @Column(name="username", unique=true, nullable=false)
     String username;
-    @Column(name="passwordhash", nullable=false)
+    @Column(name="passwordHash", nullable=false)
     String passwordHash;
-    @Column(name="passwordsalt", nullable=false)
-    String passwordSalt;
     @Column(name="firstname")
     String firstName;
     @Column(name="lastname")
@@ -50,8 +48,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", passwordHash=" + passwordHash +
-                ", passwordSalt=" + passwordSalt +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

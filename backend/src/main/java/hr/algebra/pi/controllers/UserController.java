@@ -1,16 +1,24 @@
 package hr.algebra.pi.controllers;
 
+import hr.algebra.pi.models.DTOs.LogInForm;
+import hr.algebra.pi.models.DTOs.LogInResponse;
 import hr.algebra.pi.models.DTOs.SignInForm;
 import hr.algebra.pi.models.DTOs.UserDTO;
 import hr.algebra.pi.models.User;
+import hr.algebra.pi.services.JwtService;
 import hr.algebra.pi.services.Mapper;
+import hr.algebra.pi.services.UserDetailsImpl;
 import hr.algebra.pi.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +28,18 @@ import java.util.Optional;
 @RestController
 @RequestMapping(path="api/user")
 public class UserController {
-    private final UserService userService;
-    private final Mapper mapper;
+    final UserService userService;
+    final Mapper mapper;
+    final JwtService jwtService;
+    final AuthenticationManager authenticationManager;
+
 
     @Autowired
-    public UserController(UserService userService, Mapper mapper) {
+    public UserController(UserService userService, Mapper mapper, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.mapper = mapper;
         this.userService = userService;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping
@@ -44,13 +57,26 @@ public class UserController {
         return user.map(value -> new ResponseEntity<>(mapper.mapToUserDTO(value), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("/signIn")
     public ResponseEntity<UserDTO> addUser(@RequestBody SignInForm signInForm) {
         System.out.println(signInForm.toString());
         User user = mapper.mapSignInFormToUser(signInForm);
         System.out.println(user);
         User newUser = userService.createUser(user);
         return new ResponseEntity<>(mapper.mapToUserDTO(newUser), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/logIn")
+    public ResponseEntity<LogInResponse> login(@RequestBody LogInForm logInForm) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logInForm.getUsername(), logInForm.getPassword()));
+
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        String jwt = jwtService.generateJwtToken(authentication);
+
+        return new ResponseEntity<>(new LogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -63,7 +89,6 @@ public class UserController {
                     return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
                 }
                 user.setPasswordHash(existingUser.get().getPasswordHash());
-                user.setPasswordSalt(existingUser.get().getPasswordSalt());
             }
             user.setId(id);
             userService.updateUser(user);

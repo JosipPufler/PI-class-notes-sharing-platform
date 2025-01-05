@@ -1,0 +1,51 @@
+<nav>
+    <ul>
+      <span class="left">
+        <li class="icon">
+          <i class="fa-solid fa-bars fa-xl" onclick="toggleDropDownNav()"></i>
+        </li>
+        <li class="dropdown">
+          <button class="dropbtn">Documents</button>
+          <div class="dropdown-content">
+            <a href="createDocument.html">Create text</a>
+            <a href="editDocument.html">Edit text</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <button class="dropbtn" href="groupview.html" onclick="window.location='groupview.html'">Groups</button>
+          <div class="dropdown-content">
+            <a href="creategroup.html">Create group</a>
+            <a href="groupdetails.html">Details</a>
+          </div>
+        </li>
+      </span>
+
+      <span class="right">
+        <li class="icon" id="profileIcon">
+          <i id="userSymbol" class="fa-solid fa-user fa-xl"></i>
+          <div class="dropdown-content" id="userDropdown">
+            <div
+              class="form"
+              style="
+                background-color: #cbcbcb;
+                box-shadow: 0 0 0 2px white, 0.3em 0.3em 1em rgb(0 0 0 / 60%);
+                margin-right: 5px;
+                padding: 0 15px;
+              "
+            >
+              <h2 class="formTitle" style="width: 100%; text-align: center;" id="dropdownUsername"></h2>
+
+              <div class="formElement">
+                <input
+                  type="submit"
+                  value="Log out"
+                  class="delete"
+                  id="dropdownLogOut"
+                />
+              </div>
+            </div>
+          </div>
+        </li>
+      </span>
+    </ul>
+  </nav>

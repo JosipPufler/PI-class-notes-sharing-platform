@@ -74,7 +74,7 @@ function resolveErrors() {
         }
 
         return fetch(
-            'http://localhost:8080/api/user',
+            'http://localhost:8080/api/user/signIn',
             {
                 method: "POST",
                 headers: {

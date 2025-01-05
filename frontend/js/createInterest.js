@@ -1,3 +1,5 @@
+import { getUserId, getToken, getTokenType, getUsername, generateAuthorization } from "./tokenValidator.js"
+
 const interestForm = document.getElementById("interestForm")
 const interestName = document.getElementById("name")
 let interests
@@ -46,7 +48,8 @@ function resolveErrors() {
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": generateAuthorization()
                 },
                 body: JSON.stringify(interestData)
             }
@@ -96,7 +99,8 @@ $(document).ready(function() {
         {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
             }
         }
     ).then(res => res.json())

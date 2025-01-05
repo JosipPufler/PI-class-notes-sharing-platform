@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
@@ -35,6 +36,7 @@ public class MaterialController {
 
     private final String storageDirectory = "uploads";
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<Material> createMaterial(
             @RequestParam("file") MultipartFile file,
@@ -68,6 +70,7 @@ public class MaterialController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<Material>> getAllMaterials() {
         List<Material> materials = materialService.getAllMaterials();
@@ -83,11 +86,13 @@ public class MaterialController {
         return ResponseEntity.ok(materials);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ResponseEntity<Material> getMaterialById(@PathVariable Long id) {
         return ResponseEntity.ok(materialService.findById(id));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/download/{filename}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
         try {
@@ -112,6 +117,7 @@ public class MaterialController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
     public ResponseEntity<Material> updateMaterialFile(
             @PathVariable Long id,
@@ -139,6 +145,8 @@ public class MaterialController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMaterial(@PathVariable Long id) {
         Material material = materialService.findById(id);
@@ -159,5 +167,4 @@ public class MaterialController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 }

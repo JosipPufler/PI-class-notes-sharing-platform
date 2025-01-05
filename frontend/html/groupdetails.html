@@ -24,7 +24,7 @@
             margin: 20px 0;
         }
 
-        ul {
+        ul#groupMembers {
             list-style-type: none;
             padding: 0;
             width: 100%;
@@ -32,7 +32,7 @@
             margin: 20px 0;
         }
 
-        ul li {
+        ul#groupMembers li {
             background-color: white;
             padding: 10px;
             margin-bottom: 10px;
@@ -40,7 +40,7 @@
             border-radius: 5px;
         }
 
-        button {
+        button#addUserButton {
             padding: 10px 20px;
             background-color: #007bff;
             color: white;
@@ -50,12 +50,18 @@
             margin-top: 20px;
         }
 
-        button:hover {
+        button#addUserButton {
             background-color: #0056b3;
         }
     </style>
+    <!--font awsome-->
+    <script src="https://kit.fontawesome.com/e62814bca5.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="../style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body>
+<body class="needAuthentication">
+    <div id="includeNavbar" style="width: 100%;"></div>
 <h1 id="groupName">Group Name</h1>
 <p id="groupDescription">Group Description</p>
 <ul id="groupMembers">
@@ -65,6 +71,8 @@
 </ul>
 <button id="addUserButton">Add User</button>
 
-<script src="../js/groupdetails.js"></script>
+<script type="module" src="../js/groupdetails.js"></script>
+<script type="module" src="../js/nav.js"></script>
+<script type="module" src="../js/tokenValidator.js"></script>
 </body>
 </html>

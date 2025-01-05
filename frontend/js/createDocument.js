@@ -1,3 +1,5 @@
+import { generateAuthorization } from "./tokenValidator.js"
+
 const documentForm = document.getElementById("createDocumentForm");
 const nameInput = document.getElementById("name");
 const descriptionInput = document.getElementById("description");
@@ -74,7 +76,14 @@ function displayMaterials(materials) {
 
 async function fetchMaterials() {
     try {
-        const response = await fetch('http://localhost:8080/api/materials');
+        const response = await fetch('http://localhost:8080/api/materials',
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": generateAuthorization()
+                },
+            }
+        );
         const materials = await response.json();
         const materialsListDiv = document.getElementById('materialsList');
         materialsListDiv.innerHTML = materials.map(material => `
@@ -101,7 +110,11 @@ async function deleteMaterial(id) {
     if (confirm('Are you sure you want to delete this material?')) {
         try {
             const response = await fetch(`http://localhost:8080/api/materials/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": generateAuthorization()
+                },
             });
             if (response.ok) {
                 
@@ -134,6 +147,10 @@ document.getElementById('createDocumentForm').addEventListener('submit', async (
     try {
         const response = await fetch('http://localhost:8080/api/materials', {
             method: 'POST',
+            headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": generateAuthorization()
+                },
             body: formData
         });
 
@@ -154,7 +171,13 @@ document.getElementById('createDocumentForm').addEventListener('submit', async (
 
 async function initializeMaterialTypes() {
     try {
-        const response = await fetch('http://localhost:8080/api/material-types');
+        const response = await fetch('http://localhost:8080/api/material-types', {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
+            },
+        });
         const materialTypes = await response.json();
         const select = document.getElementById('materialType');
         materialTypes.forEach(type => {

@@ -6,6 +6,8 @@ import hr.algebra.pi.models.Interest;
 import hr.algebra.pi.models.DTOs.SignInForm;
 import hr.algebra.pi.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -15,11 +17,13 @@ import java.util.Optional;
 public class Mapper {
     final UserService userService;
     final InterestService interestService;
+    final PasswordEncoder passwordEncoder;
 
     @Autowired
     public Mapper(UserService userService, InterestService interestService) {
         this.userService = userService;
         this.interestService = interestService;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     public User mapSignInFormToUser(SignInForm signInForm) {
@@ -31,11 +35,9 @@ public class Mapper {
         user.setPhoneNumber(signInForm.getPhoneNumber());
 
         if (signInForm.getPassword() != null && !signInForm.getPassword().isEmpty()) {
-            user.setPasswordSalt(PasswordService.generateNewSalt());
-            user.setPasswordHash(PasswordService.hashStringWithSalt(signInForm.getPassword(), user.getPasswordSalt().getBytes(StandardCharsets.UTF_8)));
+            user.setPasswordHash(passwordEncoder.encode(signInForm.getPassword()));
         }else{
             user.setPasswordHash(null);
-            user.setPasswordSalt(null);
         }
 
         for (Long id : signInForm.getInterests()) {
