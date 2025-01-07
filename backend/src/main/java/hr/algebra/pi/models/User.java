@@ -33,7 +33,7 @@ public class User {
     @Column(name="phoneNumber")
     String phoneNumber;
     @Column(name="active")
-    boolean active;
+    boolean active = true;
     @Column(name="settings")
     String settings;
     @ManyToMany

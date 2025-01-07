@@ -33,6 +33,7 @@ public class Mapper {
         user.setLastName(signInForm.getLastName());
         user.setEmail(signInForm.getEmail());
         user.setPhoneNumber(signInForm.getPhoneNumber());
+        user.setActive(true);
 
         if (signInForm.getPassword() != null && !signInForm.getPassword().isEmpty()) {
             user.setPasswordHash(passwordEncoder.encode(signInForm.getPassword()));

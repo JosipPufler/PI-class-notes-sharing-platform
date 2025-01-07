@@ -20,6 +20,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        user.setActive(true);
         return userRepo.saveAndFlush(user);
     }
 

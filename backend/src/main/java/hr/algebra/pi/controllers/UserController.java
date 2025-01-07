@@ -76,7 +76,10 @@ public class UserController {
 
         String jwt = jwtService.generateJwtToken(authentication);
 
-        return new ResponseEntity<>(new LogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
+        if (userService.getUser(userDetails.getId()).isPresent() && userService.getUser(userDetails.getId()).get().isActive()) {
+            return new ResponseEntity<>(new LogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/{id}")
