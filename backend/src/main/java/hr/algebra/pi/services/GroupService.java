@@ -1,7 +1,9 @@
 package hr.algebra.pi.services;
 
 import hr.algebra.pi.models.Group;
+import hr.algebra.pi.models.User;
 import hr.algebra.pi.repositories.GroupRepo;
+import hr.algebra.pi.repositories.UserRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +13,11 @@ import java.util.List;
 @Transactional
 public class GroupService {
     private final GroupRepo groupRepo;
+    private final UserRepo userRepo;
 
-    public GroupService(GroupRepo groupRepo) {
+    public GroupService(GroupRepo groupRepo, UserRepo userRepo) {
         this.groupRepo = groupRepo;
+        this.userRepo = userRepo;
     }
 
     public Group createGroup(Group group) {
@@ -26,5 +30,15 @@ public class GroupService {
 
     public Group getGroupById(Long id) {
         return groupRepo.findById(id).orElse(null);
+    }
+
+    public boolean addUserToGroup(Group group, User user) {
+        if (group.getUsers().contains(user)) {
+            return false;
+        } else {
+            group.getUsers().add(user);
+            groupRepo.saveAndFlush(group);
+            return true;
+        }
     }
 }
