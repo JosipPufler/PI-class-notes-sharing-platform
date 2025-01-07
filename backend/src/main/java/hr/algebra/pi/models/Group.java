@@ -1,9 +1,14 @@
 package hr.algebra.pi.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name="Groups")
 public class Group {
@@ -17,6 +22,13 @@ public class Group {
     String description;
     @Column(name = "date_creation")
     Date dateCreation;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "GroupUser",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> users;
 
     public Group() {}
 
@@ -33,38 +45,6 @@ public class Group {
         this.dateCreation = new Date();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDateCreation(Date dateCreation) {
-        this.dateCreation = dateCreation;
-    }
-
-    public Date getDateCreation() {
-        return dateCreation;
-    }
-
     @Override
     public String toString() {
         return "Group{" +
@@ -74,4 +54,5 @@ public class Group {
                 ", dateCreation=" + dateCreation +
                 '}';
     }
+
 }
