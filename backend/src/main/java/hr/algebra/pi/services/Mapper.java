@@ -1,16 +1,15 @@
 package hr.algebra.pi.services;
 
-import hr.algebra.pi.models.DTOs.InterestDTO;
 import hr.algebra.pi.models.DTOs.UserDTO;
 import hr.algebra.pi.models.Interest;
 import hr.algebra.pi.models.DTOs.SignInForm;
 import hr.algebra.pi.models.User;
+import hr.algebra.pi.models.UserSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Component
@@ -55,24 +54,14 @@ public class Mapper {
         userDTO.setLastName(user.getLastName());
         userDTO.setPhoneNumber(user.getPhoneNumber());
         userDTO.setUsername(user.getUsername());
-        for (Interest interest : user.getInterests()) {
-            InterestDTO interestDTO = mapToInterestDTO(interest);
-            userDTO.getInterests().add(interestDTO);
+        userDTO.setInterests(user.getInterests().stream().toList());
+        if (user.getSettings() == null || user.getSettings().isEmpty()) {
+            userDTO.setSettings(new UserSettings());
+        } else {
+            userDTO.setSettings(SettingsService.JsonToUserSettings(user.getSettings()));
         }
         userDTO.setActive(user.isActive());
         userDTO.setId(user.getId());
         return userDTO;
-    }
-
-    public InterestDTO mapToInterestDTO(Interest interest){
-        InterestDTO interestDTO = new InterestDTO();
-        interestDTO.setId(interest.getId());
-        interestDTO.setName(interest.getName());
-        if (interest.getParentInterest() != null) {
-            interestDTO.setParentInterest(interest.getParentInterest().getName());
-        } else {
-            interestDTO.setParentInterest(null);
-        }
-        return interestDTO;
     }
 }

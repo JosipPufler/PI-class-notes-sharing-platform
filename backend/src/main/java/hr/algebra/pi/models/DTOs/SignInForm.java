@@ -19,11 +19,11 @@ public class SignInForm {
     String lastName;
     List<Long> interests = new ArrayList<>();
 
-    SignInForm(String username, String password, String email, String phoneNumber, String firstName, String lastName){
+    public SignInForm(String username, String password, String email, String phoneNumber, String firstName, String lastName){
         this(username, password, email, phoneNumber, firstName, lastName, new ArrayList<>());
     }
 
-    SignInForm (String username, String password, String email, String phoneNumber, String firstName, String lastName, ArrayList<String> interests) {
+    public SignInForm (String username, String password, String email, String phoneNumber, String firstName, String lastName, ArrayList<String> interests) {
         this.username = username;
         this.password = password;
         this.email = email;

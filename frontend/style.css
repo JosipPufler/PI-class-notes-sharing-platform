@@ -450,6 +450,7 @@
   
   .formElement input[type="text"],
   .formElement input[type="password"],
+  .formElement input[type="number"],
   .formElement input[type="email"],
   .formElement input[type="tel"],
   .formElement select,
@@ -469,6 +470,7 @@
   
   .form .formElement input[type="text"]:focus,
   .form .formElement input[type="password"]:focus,
+  .formElement input[type="number"]:focus,
   .form .formElement input[type="email"]:focus,
   .form .formElement input[type="tel"]:focus,
   .form .formElement select:focus,
@@ -911,5 +913,4 @@
 .dropdown:hover .dropbtn {
   background-color: var(--cream-white);
   color: var(--light-grey);
-  text-shadow: 0px 0px 1px black;
 }

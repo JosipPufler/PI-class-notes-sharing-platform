@@ -19,7 +19,7 @@ public class User {
     @Id
     @Column(name="id", unique=true, nullable=false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
     @Column(name="username", unique=true, nullable=false)
     String username;
     @Column(name="passwordHash", nullable=false)
@@ -42,6 +42,9 @@ public class User {
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "interestId"))
     public Set<Interest> interests = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    Set<TwoFactorAuthenticationEntry> twoFactorAuthenticationEntries;
+
 
     @Override
     public String toString() {

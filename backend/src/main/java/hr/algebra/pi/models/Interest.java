@@ -1,5 +1,6 @@
 package hr.algebra.pi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class Interest {
     @JoinColumn(name = "parent_interest_id")
     public Interest parentInterest;
 
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "interests")
     public Set<User> interestedUsers;
 }

@@ -1,6 +1,5 @@
 package hr.algebra.pi.controllers;
 
-import hr.algebra.pi.models.DTOs.InterestDTO;
 import hr.algebra.pi.models.Interest;
 import hr.algebra.pi.models.DTOs.InterestCreationForm;
 import hr.algebra.pi.services.InterestService;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,24 +29,20 @@ public class InterestController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
-    public ResponseEntity<List<InterestDTO>> getInterests() {
-        List<InterestDTO> interests = new ArrayList<>();
-        for (Interest interest : interestService.getAllInterests()) {
-            interests.add(mapper.mapToInterestDTO(interest));
-        }
-        return new ResponseEntity<>(interests, HttpStatus.OK);
+    public ResponseEntity<List<Interest>> getInterests() {
+        return new ResponseEntity<>(interestService.getAllInterests(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public ResponseEntity<InterestDTO> getInterest(@PathVariable Long id) {
+    public ResponseEntity<Interest> getInterest(@PathVariable Long id) {
         Optional<Interest> interest = interestService.getInterest(id);
-        return interest.map(value -> new ResponseEntity<>(mapper.mapToInterestDTO(value), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return interest.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity<InterestDTO> addInterest(@RequestBody InterestCreationForm interestCreationForm) {
+    public ResponseEntity<Interest> addInterest(@RequestBody InterestCreationForm interestCreationForm) {
         Interest newInterest = new Interest();
         newInterest.setName(interestCreationForm.getName());
         if (interestCreationForm.getParentInterestId() != null && interestCreationForm.getParentInterestId() != 0) {
@@ -62,14 +56,14 @@ public class InterestController {
 
         interestService.createInterest(newInterest);
         System.out.println(newInterest);
-        return new ResponseEntity<>(mapper.mapToInterestDTO(newInterest), HttpStatus.CREATED);
+        return new ResponseEntity<>(newInterest, HttpStatus.CREATED);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping
-    public ResponseEntity<InterestDTO> updateInterest(@RequestBody Interest interest) {
+    public ResponseEntity<Interest> updateInterest(@RequestBody Interest interest) {
         Interest updatedInterest = interestService.updateInterest(interest);
-        return new ResponseEntity<>(mapper.mapToInterestDTO(updatedInterest), HttpStatus.CREATED);
+        return new ResponseEntity<>(updatedInterest, HttpStatus.CREATED);
     }
 
     @PreAuthorize("isAuthenticated()")

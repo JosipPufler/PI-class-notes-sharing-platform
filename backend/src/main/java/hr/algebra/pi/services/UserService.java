@@ -1,7 +1,9 @@
 package hr.algebra.pi.services;
 
 import hr.algebra.pi.models.User;
+import hr.algebra.pi.models.UserSettings;
 import hr.algebra.pi.repositories.UserRepo;
+import hr.algebra.pi.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,7 @@ import java.util.Optional;
 
 @Component
 @Transactional
-public class UserService {
+public class UserService implements IUserService {
     private final UserRepo userRepo;
 
     @Autowired
@@ -19,23 +21,12 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public User createUser(User user) {
-        user.setActive(true);
-        return userRepo.saveAndFlush(user);
+    @Override
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User with username: '" + username + "' not found"));
     }
 
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
-    }
-
-    public Optional<User> getUser(Long id) {
-        return userRepo.findById(id);
-    }
-
-    public void updateUser(User user) {
-        userRepo.saveAndFlush(user);
-    }
-
+    @Override
     public Boolean deactivateUser(Long id) {
         Optional<User> user = userRepo.findById(id);
         if (user.isPresent()) {
@@ -45,24 +36,30 @@ public class UserService {
         return false;
     }
 
-    /*public User addInterest(Long userId, Long interestId) {
-        Optional<User> user = userRepo.findById(userId);
-        if (user.isPresent()) {
-            Optional<Interest> interest = interestService.getInterest(interestId);
-            if (interest.isPresent()) {
-                user.get().getInterests().add(interest.get());
-                userRepo.saveAndFlush(user.get());
-                return user.get();
-            }else{
-                throw new RuntimeException("Interest not found");
-            }
-        } else {
-            throw new RuntimeException("User not found");
-        }
-    }*/
-
+    @Override
     public User findById(Long id) {
-        return userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @Override
+    public void update(User entity) {
+        userRepo.saveAndFlush(entity);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        userRepo.deleteById(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userRepo.findAll();
+    }
+
+    @Override
+    public User create(User entity) {
+        entity.setActive(true);
+        entity.setSettings(SettingsService.UserSettingsToJson(new UserSettings()));
+        return userRepo.saveAndFlush(entity);
     }
 }
