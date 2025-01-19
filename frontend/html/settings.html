@@ -34,29 +34,18 @@
       ></i>
     </div>
 
-    <div class="form" style="width: 60%; font-size: x-large;">
+    <div class="form" style="width: 60%;">
         <form id="updateForm">
-            <h2 class="formTitle">Settings</h2>
+            <h1 class="formTitle">Settings</h1>
             
             <div class="formElement">
-                <label for="example_toggle" style="margin-right: 5%;">Primjer postavke1: </label>
-                <label class="switch" id="example_toggle" >
-                    <input type="checkbox" style="transform: scale(1.5);">
-                    <span class="slider round"></span>
-                </label>
+                <label for="example_toggle" style="margin-right: 5%;"><h2>Dvo-faktorska autentifikacija</h2></label>
+                <label for="twoFA">Dvo faktorska autentifikacija koristeći mail:</label>
+                <input type="checkbox" name="twoFA" id="twoFA"/>        
             </div>
-
-            <div class="formElement" style="display: inline-flex; width: 100%;">
-                <label for="settings_select" style="margin-right: 5%;">Primjer postavke2:</label>
-                <select class="js-example-basic-single" name="privacy" id="privacy" style="width: 50%;">
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                  </select>
-            </div>
-            
     
             <div class="formElement">
-                <input type="submit" value="Primjeni" />
+                <input type="submit" value="Primjeni" id="submit" />
             </div>
               
         </form>

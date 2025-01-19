@@ -11,22 +11,19 @@ import java.util.Set;
 
 @Setter
 @Getter
-@Entity
 @AllArgsConstructor
-@Table(name= "interest")
 @NoArgsConstructor
-public class Interest {
+@Entity
+@Table(name = "notification_type")
+public class NotificationType {
     @Id
     @Column(name="id", unique=true, nullable=false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name="name", unique=true, nullable=false)
-    public String name;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_interest_id")
-    public Interest parentInterest;
+    Long id;
+    @Column(name = "name", unique = true, nullable = false)
+    String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "interests")
-    public Set<User> interestedUsers;
+    @OneToMany(mappedBy = "notificationType", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    Set<Notification> notifications;
 }

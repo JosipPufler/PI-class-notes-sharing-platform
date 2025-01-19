@@ -20,6 +20,26 @@
   </head>
   <body>
 
+    <div id="twoFactor">
+      <div class="popUpBackground"></div>
+      <form
+        id="popUpForm"
+        class="form top"
+        style="margin: 15px;"
+      >
+        <h2 calss="formTitle" style="margin-bottom: 15px;">
+          <span style="margin-right: 50px;">Unesite kod za potvrdu koji ste primili na mail:</span>
+        </h2>
+
+        <div class="formElement">
+          <input type="number" min="0" max="9999" style="margin-bottom: 0;" id="code"/>
+        </div>
+        <div class="formElement">
+          <input type="button" style="margin-bottom: 0;" value="Potvrdi" id="btnCode" />
+        </div>
+      </form>
+    </div>
+
     <form class="form" id="logInForm">
       <h2 class="formTitle">Prijavite se</h2>
       <div class="formElement">

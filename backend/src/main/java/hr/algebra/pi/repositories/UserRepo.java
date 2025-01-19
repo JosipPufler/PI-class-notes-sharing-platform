@@ -2,13 +2,16 @@ package hr.algebra.pi.repositories;
 
 import hr.algebra.pi.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 
 public interface UserRepo extends JpaRepository<User, Long> {
-    Boolean existsByUsername(String username);
+    default Boolean existsByUsername(String username){
+        return findByUsername(username).isPresent();
+    }
 
-    Optional<User> findByUsername(String username);
+    default Optional<User> findByUsername(String username){
+        return findAll().stream().filter(user -> username.equals(user.getUsername())).findFirst();
+    }
 }

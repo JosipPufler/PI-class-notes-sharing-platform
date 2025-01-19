@@ -31,6 +31,11 @@ public class InterestService {
 
     public Interest updateInterest(Interest interest) { return interestRepo.saveAndFlush(interest); }
 
+    public void deleteAll(){
+        interestRepo.deleteAll();
+        interestRepo.flush();
+    }
+
     public void deleteInterest(Long id) {
         interestRepo.deleteById(id);
         interestRepo.flush();

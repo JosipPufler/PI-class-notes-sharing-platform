@@ -1,7 +1,10 @@
 package hr.algebra.pi.models.DTOs;
 
-import jakarta.persistence.Column;
+import hr.algebra.pi.models.Interest;
+import hr.algebra.pi.models.UserSettings;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -9,6 +12,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
     Long id;
     String username;
@@ -16,6 +21,7 @@ public class UserDTO {
     String lastName;
     String email;
     String phoneNumber;
-    List<InterestDTO> interests = new ArrayList<>();
+    List<Interest> interests = new ArrayList<>();
     Boolean active;
+    UserSettings settings;
 }

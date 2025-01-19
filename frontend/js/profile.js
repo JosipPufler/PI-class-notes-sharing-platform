@@ -22,7 +22,7 @@ confirmPopUp.style.display = "none";
 document.body.style.overflow = "auto"
 
 
-function toggleContactPopup() {
+function toggleConfirmPopup() {
     if (popUpActive) {
         confirmPopUp.style.display = "none";
         document.body.style.overflow = "auto"
@@ -33,8 +33,8 @@ function toggleContactPopup() {
     popUpActive = !popUpActive;
 }
 
-btnDelete.onclick = function(){toggleContactPopup()}
-spanX.onclick = function(){toggleContactPopup()}
+btnDelete.onclick = function(){toggleConfirmPopup()}
+spanX.onclick = function(){toggleConfirmPopup()}
 
 document.onkeydown = function (evt) {
     let isEscape = false;
@@ -42,14 +42,14 @@ document.onkeydown = function (evt) {
         isEscape = (evt.key === "Escape" || evt.key === "Esc");
     }
     if (isEscape && popUpActive) {
-        toggleContactPopup()
+        toggleConfirmPopup()
     }
 };
 
 if (popUpForm) {
     popUpForm.addEventListener("submit", (e) => {
         deleteUser()        
-        toggleContactPopup()
+        toggleConfirmPopup()
     })
 }
 
