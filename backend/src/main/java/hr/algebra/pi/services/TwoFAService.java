@@ -50,9 +50,8 @@ public class TwoFAService implements IDatabaseService<TwoFactorAuthenticationEnt
         Optional<TwoFactorAuthenticationEntry> twoFactorAuthenticationEntry = repo.getEntryByUserId(userId);
         if (twoFactorAuthenticationEntry.isPresent() && twoFactorAuthenticationEntry.get().getExpiryDateTime().isAfter(LocalDateTime.now())) {
             return twoFactorAuthenticationEntry;
-        } else if (twoFactorAuthenticationEntry.isPresent() && twoFactorAuthenticationEntry.get().getExpiryDateTime().isBefore(LocalDateTime.now())) {
-            deleteAllUserEntries(userId);
         }
+        deleteAllUserEntries(userId);
         return Optional.empty();
     }
 

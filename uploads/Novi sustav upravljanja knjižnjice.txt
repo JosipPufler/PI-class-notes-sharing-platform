@@ -1,3 +1,0 @@
- Sustav upravljanja knjigama u knjižnici se sastoji od:
--backenda
--frontenda

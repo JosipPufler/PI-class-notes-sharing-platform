@@ -19,12 +19,10 @@ import java.util.Optional;
 @RequestMapping(path="api/interest")
 public class InterestController {
     private final InterestService interestService;
-    private final Mapper mapper;
 
     @Autowired
     public InterestController(InterestService interestService, Mapper mapper) {
         this.interestService = interestService;
-        this.mapper = mapper;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -45,7 +43,7 @@ public class InterestController {
     public ResponseEntity<Interest> addInterest(@RequestBody InterestCreationForm interestCreationForm) {
         Interest newInterest = new Interest();
         newInterest.setName(interestCreationForm.getName());
-        if (interestCreationForm.getParentInterestId() != null && interestCreationForm.getParentInterestId() != 0) {
+        if (interestCreationForm.getParentInterestId() != null) {
             Optional<Interest> parentInterest = interestService.getInterest(interestCreationForm.getParentInterestId());
             if (parentInterest.isPresent()) {
                 newInterest.setParentInterest(parentInterest.get());
@@ -55,7 +53,6 @@ public class InterestController {
         }
 
         interestService.createInterest(newInterest);
-        System.out.println(newInterest);
         return new ResponseEntity<>(newInterest, HttpStatus.CREATED);
     }
 
@@ -63,7 +60,7 @@ public class InterestController {
     @PutMapping
     public ResponseEntity<Interest> updateInterest(@RequestBody Interest interest) {
         Interest updatedInterest = interestService.updateInterest(interest);
-        return new ResponseEntity<>(updatedInterest, HttpStatus.CREATED);
+        return new ResponseEntity<>(updatedInterest, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -75,9 +72,6 @@ public class InterestController {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> dataIntegrityViolationException(final DataIntegrityViolationException e) {
-        if (e.getMessage().toLowerCase().contains("interests_name_key")){
-            return new ResponseEntity<>("\"name\"", HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<>("\"general\"", HttpStatus.CONFLICT);
+        return new ResponseEntity<>("\"name\"", HttpStatus.CONFLICT);
     }
 }

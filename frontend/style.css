@@ -407,6 +407,7 @@
   }
   
   .form .formElement input[type="submit"],
+  .form .formElement input[type="button"],
   .tableElement input[type="button"].delete,
   input[type="button"].delete {
     margin-top: 5px;
@@ -424,7 +425,8 @@
     transition: all 0.2s linear 0.1ms;
   }
   
-  .form .formElement input[type="submit"]:hover {
+  .form .formElement input[type="submit"]:hover,
+  .form .formElement input[type="button"]:hover {
     background-color: lime;
     color: black;
   }
@@ -883,6 +885,22 @@
 .dropdown {
   position: relative;
   display: inline-block;
+}
+
+.badge:after{
+  content:"";
+  position: absolute;
+  background: rgb(255, 255, 255);
+  height:1rem;
+  top:2rem;
+  right:3rem;
+  width:1rem;
+  text-align: center;
+  line-height: 1rem;;
+  font-size: 0.5rem;
+  border-radius: 50%;
+  color:var(--light-grey);
+  border:1px solid;
 }
 
 /* Dropdown Content (Hidden by Default) */

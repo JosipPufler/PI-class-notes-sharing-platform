@@ -21,7 +21,7 @@ public interface TwoFARepo extends JpaRepository<TwoFactorAuthenticationEntry, L
         List<TwoFactorAuthenticationEntry> all = this.findAll();
         for(TwoFactorAuthenticationEntry entry : all){
             if (entry.getUser().getId().equals(userId)){
-                this.delete(entry);
+                delete(entry);
             }
         }
         flush();
