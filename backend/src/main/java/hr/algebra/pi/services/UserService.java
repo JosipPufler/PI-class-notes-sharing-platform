@@ -3,7 +3,7 @@ package hr.algebra.pi.services;
 import hr.algebra.pi.models.User;
 import hr.algebra.pi.models.UserSettings;
 import hr.algebra.pi.repositories.UserRepo;
-import hr.algebra.pi.services.interfaces.IUserService;
+import hr.algebra.pi.interfaces.IUserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,10 @@ import java.util.Optional;
 @Transactional
 public class UserService implements IUserService {
     final UserRepo userRepo;
-    final Mapper mapper;
 
     @Autowired
-    public UserService(UserRepo userRepo, InterestService interestService, Mapper mapper) {
+    public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
-        this.mapper = mapper;
     }
 
     @Override

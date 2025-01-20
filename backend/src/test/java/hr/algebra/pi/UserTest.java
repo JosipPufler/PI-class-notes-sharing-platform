@@ -3,6 +3,7 @@ package hr.algebra.pi;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hr.algebra.pi.config.SecurityConfiguration;
+import hr.algebra.pi.interfaces.LogInResponse;
 import hr.algebra.pi.models.DTOs.*;
 import hr.algebra.pi.models.TwoFactorAuthenticationEntry;
 import hr.algebra.pi.models.User;
@@ -94,7 +95,7 @@ class UserTest {
                         .contentType(MediaType.APPLICATION_JSON))
                         .andDo(print()).andExpect(status().isOk()).andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        LogInResponse logInResponse = objectMapper.readValue(contentAsString, LogInResponse.class);
+        LogInResponse logInResponse = objectMapper.readValue(contentAsString, BearerLogInResponse.class);
         assertThat(logInResponse.getToken()).isNotNull().isNotBlank().isNotEmpty();
         assertThat(logInResponse.getUsername()).isEqualTo(defaultSignInForm.getUsername());
     }
@@ -131,7 +132,7 @@ class UserTest {
 
         MvcResult mvcResult = mockMvc.perform(post("/api/user/confirmLogIn").content(testUtils.asJsonString(logInFormWithAuthentication)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        LogInResponse logInResponse = objectMapper.readValue(contentAsString, LogInResponse.class);
+        LogInResponse logInResponse = objectMapper.readValue(contentAsString, BearerLogInResponse.class);
         assertThat(logInResponse.getToken()).isNotNull().isNotBlank().isNotEmpty();
         assertThat(logInResponse.getUsername()).isEqualTo(defaultSignInForm.getUsername());
     }

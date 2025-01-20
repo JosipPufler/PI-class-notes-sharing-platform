@@ -2,7 +2,7 @@ package hr.algebra.pi.services;
 
 import hr.algebra.pi.models.TwoFactorAuthenticationEntry;
 import hr.algebra.pi.repositories.TwoFARepo;
-import hr.algebra.pi.services.interfaces.IDatabaseService;
+import hr.algebra.pi.interfaces.IDatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
