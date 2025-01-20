@@ -2,7 +2,9 @@ package hr.algebra.pi.controllers;
 
 import hr.algebra.pi.models.CreateGroupForm;
 import hr.algebra.pi.models.Group;
+import hr.algebra.pi.models.User;
 import hr.algebra.pi.services.GroupService;
+import hr.algebra.pi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -11,16 +13,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
 @RequestMapping(path="api/group")
 public class GroupController {
     private final GroupService groupService;
+    private final UserService userService;
 
     @Autowired
-    public GroupController(GroupService groupService) {
+    public GroupController(GroupService groupService, UserService userService) {
         this.groupService = groupService;
+        this.userService = userService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -48,11 +53,34 @@ public class GroupController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Group> getGroupById(@PathVariable Long id) {
-        Group group = groupService.getGroupById(id);
-        if (group != null) {
-            return ResponseEntity.ok(group);
+        try {
+            Group group = groupService.getGroupById(id);
+            if (group != null) {
+                return ResponseEntity.ok(group);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{groupId}/addUser")
+    public ResponseEntity<String> addUserToGroup(@PathVariable Long groupId, @RequestBody Map<String, Long> request) {
+        Long userId = request.get("userId");
+        Group group = groupService.getGroupById(groupId);
+        User user = userService.findById(userId);
+
+        if (group != null && user != null) {
+            boolean added = groupService.addUserToGroup(group, user);
+            if (added) {
+                return new ResponseEntity<>("User added to group", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("User is already in the group", HttpStatus.CONFLICT);
+            }
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>("Group or User not found", HttpStatus.NOT_FOUND);
         }
     }
 

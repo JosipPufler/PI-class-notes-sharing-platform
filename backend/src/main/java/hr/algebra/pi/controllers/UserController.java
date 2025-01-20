@@ -1,22 +1,22 @@
 package hr.algebra.pi.controllers;
 
+import hr.algebra.pi.interfaces.LogInResponse;
+import hr.algebra.pi.models.*;
 import hr.algebra.pi.models.DTOs.*;
-import hr.algebra.pi.models.TwoFactorAuthenticationEntry;
-import hr.algebra.pi.models.User;
-import hr.algebra.pi.models.UserSettings;
 import hr.algebra.pi.services.*;
-import hr.algebra.pi.services.interfaces.IUserService;
-import jakarta.persistence.EntityNotFoundException;
+import hr.algebra.pi.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,36 +34,43 @@ public class UserController {
     final Random rand = new Random();
     final TwoFAService twoFAService;
     final MailService mailService;
+    final NotificationService notificationService;
 
     @Autowired
-    public UserController(UserService userService, Mapper mapper, JwtService jwtService, AuthenticationManager authenticationManager, TwoFAService twoFAService, MailService mailService) {
+    public UserController(UserService userService, Mapper mapper, AuthenticationManager authenticationManager, TwoFAService twoFAService, MailService mailService, NotificationService notificationService, NotificationTypeService notificationTypeService) {
         this.mapper = mapper;
         this.userService = userService;
-        this.jwtService = jwtService;
+        this.jwtService = JwtServiceSingleton.getInstance();
         this.authenticationManager = authenticationManager;
         this.twoFAService = twoFAService;
         this.mailService = mailService;
+        this.notificationService = notificationService;
     }
 
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<UserDTO>> getUsers() {
         List<UserDTO> users = new ArrayList<>();
         for (User user : userService.getAll()) {
-            users.add(mapper.mapToUserDTO(user));
+            users.add(new UserDtoAdapter(user));
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         User user = userService.findById(id);
-        return new ResponseEntity<>(mapper.mapToUserDTO(user), HttpStatus.OK);
+        return new ResponseEntity<>(new UserDtoAdapter(user), HttpStatus.OK);
     }
 
     @PostMapping("/signIn")
     public ResponseEntity<UserDTO> addUser(@RequestBody SignInForm signInForm) {
-        User newUser = userService.create(mapper.mapSignInFormToUser(signInForm));
-        return new ResponseEntity<>(mapper.mapToUserDTO(newUser), HttpStatus.CREATED);
+        User user = mapper.mapSignInFormToUser(signInForm);
+        User newUser = userService.create(user);
+        notificationService.createInfoNotification("Dobro došli", "Uspješno ste kreirali korisnički račun", newUser);
+        return new ResponseEntity<>(new UserDtoAdapter(newUser), HttpStatus.CREATED);
     }
 
     @PostMapping("/logIn")
@@ -76,11 +83,11 @@ public class UserController {
 
         User user = userService.findById(userDetails.getId());
 
-        if (user == null || !user.isActive()) {
+        if (!user.isActive()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        if (SettingsService.JsonToUserSettings(user.getSettings()).getTwoFactorAuthenticationEnabled()){
+        if (Boolean.TRUE.equals(Mapper.jsonToUserSettings(user.getSettings()).getTwoFactorAuthenticationEnabled())){
             String code = String.format("%04d", rand.nextInt(10000));
             TwoFactorAuthenticationEntry entry = new TwoFactorAuthenticationEntry();
             entry.setUser(user);
@@ -91,7 +98,8 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         String jwt = jwtService.generateJwtToken(authentication);
-        return new ResponseEntity<>(new LogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
+        notificationService.createInfoNotification("Prijava", "Uspješno ste se prijavili u sustav", userService.findById(userDetails.getId()));
+        return new ResponseEntity<>(new BearerLogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/confirmLogIn")
@@ -106,44 +114,49 @@ public class UserController {
         if (entry.isPresent() && entry.get().getCode().equals(logInForm.getCode())) {
             String jwt = jwtService.generateJwtToken(authentication);
             twoFAService.deleteAllUserEntries(userDetails.getId());
-            return new ResponseEntity<>(new LogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
+            notificationService.createInfoNotification("Log in", "You have logged in", userService.findById(userDetails.getId()));
+            return new ResponseEntity<>(new BearerLogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody SignInForm signInForm) {
-        try {
-            User user = mapper.mapSignInFormToUser(signInForm);
-            if(user.getPasswordHash() == null) {
-                User existingUser = userService.findById(id);
-                user.setPasswordHash(existingUser.getPasswordHash());
-            }
-            user.setId(id);
-            userService.update(user);
-            return new ResponseEntity<>("\"Success\"", HttpStatus.OK);
-        } catch (EntityNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        User user = mapper.mapSignInFormToUser(signInForm);
+        if(user.getPasswordHash() == null) {
+            User existingUser = userService.findById(id);
+            user.setPasswordHash(existingUser.getPasswordHash());
         }
+        user.setId(id);
+        userService.update(user);
+        notificationService.createInfoNotification("Ažurirali ste podatke", "Uspješno ste ažurirali podatke", user);
+        return new ResponseEntity<>("\"Success\"", HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/updateSettings/{id}")
     public ResponseEntity<Boolean> updateUserSettings(@PathVariable Long id, @RequestBody UserSettings userSettings) {
-        try {
-            User user = userService.findById(id);
-            user.setSettings(SettingsService.UserSettingsToJson(userSettings));
-            userService.update(user);
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        } catch (EntityNotFoundException e){
-            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-        }
+        User user = userService.findById(id);
+        user.setSettings(Mapper.userSettingsToJson(userSettings));
+        userService.update(user);
+        notificationService.createInfoNotification("Ažurirali ste postavke", "Uspješno ste ažurirali postavke", user);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id){
-        if (userService.deactivateUser(id))
+    public ResponseEntity<Boolean> deactivateUser(@PathVariable Long id){
+        if (Boolean.TRUE.equals(userService.deactivateUser(id)))
             return new ResponseEntity<>(true, HttpStatus.OK);
         return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/clear/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long id){
+        userService.deleteById(id);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

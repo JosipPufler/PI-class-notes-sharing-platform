@@ -1,4 +1,4 @@
-package hr.algebra.pi.services.interfaces;
+package hr.algebra.pi.interfaces;
 
 import java.util.List;
 

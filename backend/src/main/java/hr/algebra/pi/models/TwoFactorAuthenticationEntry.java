@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name= "authentication_tokens", schema = "public")
+@Table(name= "authentication_codes", schema = "public")
 public class TwoFactorAuthenticationEntry {
     @Id
     @Column(name="id", unique=true, nullable=false)
@@ -24,7 +24,7 @@ public class TwoFactorAuthenticationEntry {
     @Column(name="expiryDate", nullable=false)
     LocalDateTime expiryDateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", nullable = false)
     User user;
 }
