@@ -9,11 +9,8 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -22,11 +19,9 @@ import java.util.Date;
 public class JwtService {
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
 
-    @Value("${jwtSecret}")
-    private String jwtSecret;
+    private final String jwtSecret = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
 
-    @Value("${jwtExpirationMs}")
-    private int jwtExpirationMs;
+    private final int jwtExpirationMs = 8640000;
 
     public String generateJwtToken(Authentication authentication) {
 

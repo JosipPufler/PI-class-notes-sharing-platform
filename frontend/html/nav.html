@@ -21,6 +21,28 @@
       </span>
 
       <span class="right">
+        <li class="icon" id="notificationIcon">
+          <i id="notificationSymbol" class="fa-solid fa-bell fa-xl badge"></i>
+
+          <div id="confirmPopUp" style="height: 1000px; width: 1000px;">
+            <div class="popUpBackground"></div>
+            <form
+              id="popUpForm"
+              class="form top"
+              method="post"
+              style="margin: 15px; width: 40%;"
+            >
+              <h2 calss="formTitle" style="margin-bottom: 15px;">
+                <span style="margin-right: 50px;">Notifikacije</span>
+              </h2>
+              <div id="notificationList" style="overflow-y: scroll;">
+                
+              </div>
+              
+          
+            </form>
+          </div>      
+        </li>
         <li class="icon" id="profileIcon">
           <i id="userSymbol" class="fa-solid fa-user fa-xl"></i>
           <div class="dropdown-content" id="userDropdown">
@@ -33,7 +55,7 @@
                 padding: 0 15px;
               "
             >
-              <h2 class="formTitle" style="width: 100%; text-align: center;" id="dropdownUsername"></h2>
+              <h2 class="formTitle" style="width: 100%; text-align: center; margin-top: 10px; cursor: pointer;" id="dropdownUsername" onclick="window.location='profile.html'"></h2>
 
               <div class="formElement">
                 <input

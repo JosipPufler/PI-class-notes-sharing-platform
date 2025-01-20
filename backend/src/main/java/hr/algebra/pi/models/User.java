@@ -20,7 +20,7 @@ public class User {
     @Id
     @Column(name="id", unique=true, nullable=false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
     @Column(name="username", unique=true, nullable=false)
     String username;
     @Column(name="passwordHash", nullable=false)
@@ -34,7 +34,7 @@ public class User {
     @Column(name="phoneNumber")
     String phoneNumber;
     @Column(name="active")
-    boolean active;
+    boolean active = true;
     @Column(name="settings")
     String settings;
     @ManyToMany
@@ -44,16 +44,9 @@ public class User {
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "interestId"))
     public Set<Interest> interests = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    Set<TwoFactorAuthenticationEntry> twoFactorAuthenticationEntries;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    Set<Notification> notifications;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
 }
