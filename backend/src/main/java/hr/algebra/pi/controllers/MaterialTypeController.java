@@ -1,7 +1,7 @@
 package hr.algebra.pi.controllers;
 
 import hr.algebra.pi.models.MaterialType;
-import hr.algebra.pi.services.MaterialTypeServiceImpl;
+import hr.algebra.pi.services.MaterialTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 public class MaterialTypeController {
 
     @Autowired
-    private MaterialTypeServiceImpl materialTypeService;
+    private MaterialTypeService materialTypeService;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping

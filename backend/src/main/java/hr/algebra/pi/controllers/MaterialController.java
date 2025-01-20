@@ -1,8 +1,8 @@
 package hr.algebra.pi.controllers;
 
 import hr.algebra.pi.models.Material;
-import hr.algebra.pi.services.MaterialServiceImpl;
-import hr.algebra.pi.services.MaterialTypeServiceImpl;
+import hr.algebra.pi.services.MaterialService;
+import hr.algebra.pi.services.MaterialTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,18 +27,52 @@ import java.util.List;
 @CrossOrigin("http://127.0.0.1:5500")
 @RequestMapping("/api/materials")
 public class MaterialController {
+        //stavit u cinstrucitor
+    @Autowired
+    private MaterialService materialService;
 
     @Autowired
-    private MaterialServiceImpl materialService;
-
-    @Autowired
-    private MaterialTypeServiceImpl materialTypeService;
+    private MaterialTypeService materialTypeService;
 
     private final String storageDirectory = "uploads";
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<Material> createMaterial(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("userId") Long userId,
+            @RequestParam("materialTypeId") Long materialTypeId,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description) {
+
+        File directory = new File(storageDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        try {
+            Path filePath = Paths.get(storageDirectory, file.getOriginalFilename());
+            Files.write(filePath, file.getBytes());
+
+            Material material = new Material();
+            material.setUser(materialService.findUserById(userId));
+            material.setMaterialType(materialTypeService.findById(materialTypeId).get());
+            material.setName(name);
+            material.setDescription(description);
+            material.setCreationDate(java.time.LocalDate.now());
+            material.setLocation(filePath.toString());
+
+            Material savedMaterial = materialService.saveMaterial(material);
+
+            return ResponseEntity.ok(savedMaterial);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping
+    public ResponseEntity<Material> uploadMaterial(
             @RequestParam("file") MultipartFile file,
             @RequestParam("userId") Long userId,
             @RequestParam("materialTypeId") Long materialTypeId,

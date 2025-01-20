@@ -31,6 +31,9 @@ public class Material {
 
     private String location;
 
+    @Column(name = "tags",nullable = true)
+    private String tags;
+
     // Getters and Setters
 
     public Long getId() {
@@ -87,6 +90,14 @@ public class Material {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }
 

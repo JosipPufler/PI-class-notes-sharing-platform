@@ -1,5 +1,6 @@
 package hr.algebra.pi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Interest {
     @Column(name="name", unique=true, nullable=false)
     public String name;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "parent_interest_id")
     public Interest parentInterest;
 

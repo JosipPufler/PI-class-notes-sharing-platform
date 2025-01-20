@@ -1,5 +1,6 @@
 package hr.algebra.pi.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class User {
     @Column(name="settings")
     String settings;
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "UserInterest",
             joinColumns = @JoinColumn(name = "userId"),
