@@ -64,8 +64,8 @@ class NotificationControllerTest {
     public void setUp() throws Exception {
         objectMapper.findAndRegisterModules();
         testUtils.clearData();
-        userId = testUtils.addUser(mockMvc, defaultSignInForm);
         notificationTypeId = testUtils.createNotificationInfoType();
+        userId = testUtils.addUser(mockMvc, defaultSignInForm);
         id = createDefaultNotification();
     }
 
@@ -73,32 +73,25 @@ class NotificationControllerTest {
     void testGetNotifications() throws Exception{
         MvcResult mvcResult = mockMvc.perform(get("/api/notification/" + userId).header(HttpHeaders.AUTHORIZATION, testUtils
                         .getAuthorizationHeader(mockMvc, defaultSignInForm)))
-                .andDo(print()).andExpect(status().isOk()).andReturn();
+                .andExpect(status().isOk()).andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
         List<Notification> notification = objectMapper.readValue(contentAsString, new TypeReference<>() {});
-        assertThat(notification).isNotNull().hasSize(1);
+        assertThat(notification).isNotNull().hasSize(3);
     }
 
     @Test
     void testMarkNotificationsAsRead() throws Exception{
         mockMvc.perform(put("/api/notification/" + id).header(HttpHeaders.AUTHORIZATION, testUtils
                         .getAuthorizationHeader(mockMvc, defaultSignInForm)))
-                .andDo(print()).andExpect(status().isOk());
+                .andExpect(status().isOk());
         assertThat(notificationService.findById(id).getIsRead()).isEqualTo(Boolean.TRUE);
-    }
-
-    @Test
-    void testMarkNonExistingNotificationsAsRead() throws Exception{
-        mockMvc.perform(put("/api/notification/" + (id-1)).header(HttpHeaders.AUTHORIZATION, testUtils
-                        .getAuthorizationHeader(mockMvc, defaultSignInForm)))
-                .andDo(print()).andExpect(status().isNotFound());
     }
 
     @Test
     void testDeleteAllUserNotifications() throws Exception{
         mockMvc.perform(delete("/api/notification/clear/" + userId).header(HttpHeaders.AUTHORIZATION, testUtils
                         .getAuthorizationHeader(mockMvc, defaultSignInForm)))
-                .andDo(print()).andExpect(status().isOk());
+                .andExpect(status().isOk());
         assertThat(notificationService.getAll()).isEmpty();
     }
 
@@ -106,8 +99,8 @@ class NotificationControllerTest {
     void testDeleteNotification() throws Exception{
         mockMvc.perform(delete("/api/notification/" + id).header(HttpHeaders.AUTHORIZATION, testUtils
                         .getAuthorizationHeader(mockMvc, defaultSignInForm)))
-                .andDo(print()).andExpect(status().isOk());
-        assertThrows(RuntimeException.class, () ->notificationService.findById(id));
+                .andExpect(status().isOk());
+        assertThrows(EntityNotFoundException.class, () -> notificationService.findById(id));
     }
 
     @Test

@@ -28,7 +28,7 @@ public class Notification {
     Boolean isRead = false;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_Id", nullable = false)
     User user;
 

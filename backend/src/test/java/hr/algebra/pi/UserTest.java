@@ -60,6 +60,7 @@ class UserTest {
     @BeforeEach
     public void setUp(){
         testUtils.clearData();
+        testUtils.createNotificationInfoType();
     }
 
     @Test
@@ -113,7 +114,6 @@ class UserTest {
 
     @Test
     void test2FALogIn() throws Exception{
-        testUtils.createNotificationInfoType();
         long userId = testUtils.addUser(mockMvc, defaultSignInForm);
         UserSettings userSettings = new UserSettings();
         userSettings.setTwoFactorAuthenticationEnabled(true);
@@ -139,7 +139,6 @@ class UserTest {
 
     @Test
     void test2FALogInWithoutCode() throws Exception{
-        testUtils.createNotificationInfoType();
         long userId = testUtils.addUser(mockMvc, defaultSignInForm);
         UserSettings userSettings = new UserSettings();
         userSettings.setTwoFactorAuthenticationEnabled(true);

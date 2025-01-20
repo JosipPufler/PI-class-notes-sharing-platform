@@ -35,6 +35,7 @@ public class NotificationService implements IDatabaseService<Notification> {
 
     @Override
     public void deleteById(Long id) {
+        findById(id);
         repo.deleteById(id);
         repo.flush();
     }

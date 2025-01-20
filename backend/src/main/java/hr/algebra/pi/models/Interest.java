@@ -22,7 +22,7 @@ public class Interest {
     private Long id;
     @Column(name="name", unique=true, nullable=false)
     public String name;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_interest_id")
     public Interest parentInterest;
 

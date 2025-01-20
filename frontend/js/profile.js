@@ -196,6 +196,21 @@ function resolveErrors() {
 
 $(document).ready(function() {
     fetch(
+        'http://localhost:8080/api/user',
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
+            }
+        }
+    ).then(res => res.json())
+        .then(json => {
+            console.log(json)
+        }
+        )
+    
+    fetch(
         'http://localhost:8080/api/interest',
         {
             method: "GET",
