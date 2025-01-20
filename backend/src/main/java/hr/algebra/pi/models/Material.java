@@ -29,6 +29,9 @@ public class Material {
     @Column(name = "creationDate", nullable = false)
     private LocalDate creationDate;
 
+    @Column(name = "tags",nullable = true)
+    private String tags;
+
     private String location;
 
     // Getters and Setters
@@ -87,6 +90,14 @@ public class Material {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }
 

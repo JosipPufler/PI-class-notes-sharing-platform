@@ -23,6 +23,7 @@ public class Interest {
     @Column(name="name", unique=true, nullable=false)
     public String name;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "parent_interest_id")
     public Interest parentInterest;
 

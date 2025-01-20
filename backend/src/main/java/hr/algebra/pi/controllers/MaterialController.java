@@ -1,8 +1,9 @@
 package hr.algebra.pi.controllers;
 
 import hr.algebra.pi.models.Material;
-import hr.algebra.pi.services.MaterialServiceImpl;
-import hr.algebra.pi.services.MaterialTypeServiceImpl;
+import hr.algebra.pi.services.Mapper;
+import hr.algebra.pi.services.MaterialService;
+import hr.algebra.pi.services.MaterialTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,15 +30,18 @@ import java.util.List;
 public class MaterialController {
 
     @Autowired
-    private MaterialServiceImpl materialService;
+    private MaterialService materialService;
 
     @Autowired
-    private MaterialTypeServiceImpl materialTypeService;
+    private MaterialTypeService materialTypeService;
 
     private final String storageDirectory = "uploads";
+    @Autowired
+    private Mapper mapper;
+
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping
+    @PostMapping("/api/materials/create")
     public ResponseEntity<Material> createMaterial(
             @RequestParam("file") MultipartFile file,
             @RequestParam("userId") Long userId,
@@ -71,6 +75,42 @@ public class MaterialController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @PostMapping("/api/materials/upload")
+    public ResponseEntity<Material> uploadMaterial(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("userId") Long userId,
+            @RequestParam("materialTypeId") Long materialTypeId,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam(value = "tags", required = false) String tags) {
+
+        File directory = new File(storageDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        try {
+            Path filePath = Paths.get(storageDirectory, file.getOriginalFilename());
+            Files.write(filePath, file.getBytes());
+
+            Material material = new Material();
+            material.setUser(materialService.findUserById(userId));
+            material.setMaterialType(materialTypeService.findById(materialTypeId).get());
+            material.setName(name);
+            material.setDescription(description);
+            material.setCreationDate(java.time.LocalDate.now());
+            material.setLocation(filePath.toString());
+            material.setTags(tags);
+
+            Material savedMaterial = materialService.saveMaterial(material);
+
+            return ResponseEntity.ok(savedMaterial);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<Material>> getAllMaterials() {
         List<Material> materials = materialService.getAllMaterials();
@@ -85,6 +125,7 @@ public class MaterialController {
 
         return ResponseEntity.ok(materials);
     }
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
