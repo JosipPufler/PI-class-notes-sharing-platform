@@ -2,7 +2,7 @@ package hr.algebra.pi.services;
 
 import hr.algebra.pi.models.NotificationType;
 import hr.algebra.pi.repositories.NotificationTypeRepo;
-import hr.algebra.pi.services.interfaces.IDatabaseService;
+import hr.algebra.pi.interfaces.IDatabaseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

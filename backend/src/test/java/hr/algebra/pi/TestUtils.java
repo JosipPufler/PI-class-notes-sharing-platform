@@ -1,8 +1,10 @@
 package hr.algebra.pi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hr.algebra.pi.interfaces.LogInResponse;
 import hr.algebra.pi.models.DTOs.*;
 import hr.algebra.pi.models.Interest;
+import hr.algebra.pi.models.LogInResponseDecorator;
 import hr.algebra.pi.models.NotificationType;
 import hr.algebra.pi.services.NotificationService;
 import hr.algebra.pi.services.NotificationTypeService;
@@ -41,8 +43,8 @@ public class TestUtils {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        LogInResponse logIn = new ObjectMapper().readValue(contentAsString, LogInResponse.class);
-        return logIn.getTokenType() + " " + logIn.getToken();
+        LogInResponse logIn = new ObjectMapper().readValue(contentAsString, BearerLogInResponse.class);
+        return new LogInResponseDecorator(logIn).getAuthorizationHeader();
     }
 
     public long addUser(MockMvc mockMvc, SignInForm user) throws Exception {

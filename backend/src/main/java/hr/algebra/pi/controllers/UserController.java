@@ -1,9 +1,10 @@
 package hr.algebra.pi.controllers;
 
+import hr.algebra.pi.interfaces.LogInResponse;
 import hr.algebra.pi.models.*;
 import hr.algebra.pi.models.DTOs.*;
 import hr.algebra.pi.services.*;
-import hr.algebra.pi.services.interfaces.IUserService;
+import hr.algebra.pi.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -95,7 +96,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         String jwt = jwtService.generateJwtToken(authentication);
-        return new ResponseEntity<>(new LogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(new BearerLogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/confirmLogIn")
@@ -111,7 +112,7 @@ public class UserController {
             String jwt = jwtService.generateJwtToken(authentication);
             twoFAService.deleteAllUserEntries(userDetails.getId());
             notificationService.createInfoNotification("Log in", "You have logged in", userService.findById(userDetails.getId()));
-            return new ResponseEntity<>(new LogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
+            return new ResponseEntity<>(new BearerLogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
