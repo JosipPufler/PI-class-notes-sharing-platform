@@ -118,7 +118,7 @@ window.onload = function(){
             }else{
                 doc.body.firstChild.style.fontWeight = "400"
             }
-            doc.body.firstChild.addEventListener("click", markAsRead(doc.body.firstChild.id))
+            //doc.body.firstChild.addEventListener("click", markAsRead(doc.body.firstChild.id))
             notificationList.insertBefore(parser.parseFromString('<hr>', 'text/html').body.firstChild, notificationList.firstChild)
             notificationList.insertBefore(doc.body.firstChild, notificationList.firstChild)
         }

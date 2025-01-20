@@ -26,11 +26,7 @@ public class NotificationController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     ResponseEntity<List<Notification>> getAllUserNotifications(@PathVariable String id) {
-        try {
-            return new ResponseEntity<>(notificationService.findByUserId(Long.parseLong(id)), HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(notificationService.findByUserId(Long.parseLong(id)), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -47,12 +43,8 @@ public class NotificationController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/clear/{id}")
     ResponseEntity<Void> clearNotifications(@PathVariable String id) {
-        try {
-            notificationService.clearAllUserNotifications(Long.parseLong(id));
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        notificationService.clearAllUserNotifications(Long.parseLong(id));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")

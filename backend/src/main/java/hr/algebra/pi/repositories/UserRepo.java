@@ -7,10 +7,6 @@ import java.util.Optional;
 
 
 public interface UserRepo extends JpaRepository<User, Long> {
-    default Boolean existsByUsername(String username){
-        return findByUsername(username).isPresent();
-    }
-
     default Optional<User> findByUsername(String username){
         return findAll().stream().filter(user -> username.equals(user.getUsername())).findFirst();
     }

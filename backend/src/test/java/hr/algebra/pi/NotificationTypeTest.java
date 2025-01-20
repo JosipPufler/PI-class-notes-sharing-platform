@@ -36,16 +36,16 @@ public class NotificationTypeTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     SignInForm defaultSignInForm = new SignInForm("PPeric", "password", "pperic@gmail.com", "0912233321", "Pero", "Peric");
-
+    Long id;
     @BeforeEach
     public void setUp() throws Exception {
         testUtils.clearData();
+        id = testUtils.createNotificationInfoType();
         testUtils.addUser(mockMvc, defaultSignInForm);
     }
 
     @Test
     void testGetNotificationTypes() throws Exception{
-        testUtils.createNotificationInfoType();
         MvcResult mvcResult = mockMvc.perform(get("/api/notificationType").header(HttpHeaders.AUTHORIZATION, testUtils
                         .getAuthorizationHeader(mockMvc, defaultSignInForm)))
                 .andDo(print()).andExpect(status().isOk()).andReturn();
@@ -56,7 +56,6 @@ public class NotificationTypeTest {
 
     @Test
     void testGetNotificationTypeById() throws Exception{
-        Long id = testUtils.createNotificationInfoType();
         MvcResult mvcResult = mockMvc.perform(get("/api/notificationType/"+id).header(HttpHeaders.AUTHORIZATION, testUtils
                         .getAuthorizationHeader(mockMvc, defaultSignInForm)))
                 .andDo(print()).andExpect(status().isOk()).andReturn();
@@ -64,5 +63,12 @@ public class NotificationTypeTest {
         NotificationType notification = objectMapper.readValue(contentAsString, new TypeReference<>() {});
         assertThat(notification).isNotNull();
         assertThat(notification.getId()).isEqualTo(id);
+    }
+
+    @Test
+    void testGetNotificationTypeByIncorrectId() throws Exception{
+        mockMvc.perform(get("/api/notificationType/"+(id + 1)).header(HttpHeaders.AUTHORIZATION, testUtils
+                        .getAuthorizationHeader(mockMvc, defaultSignInForm)))
+                .andDo(print()).andExpect(status().isNotFound());
     }
 }

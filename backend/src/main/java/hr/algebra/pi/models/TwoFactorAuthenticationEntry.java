@@ -24,7 +24,7 @@ public class TwoFactorAuthenticationEntry {
     @Column(name="expiryDate", nullable=false)
     LocalDateTime expiryDateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", nullable = false)
     User user;
 }

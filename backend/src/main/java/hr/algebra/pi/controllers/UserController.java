@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class UserController {
     public ResponseEntity<UserDTO> addUser(@RequestBody SignInForm signInForm) {
         User user = mapper.mapSignInFormToUser(signInForm);
         User newUser = userService.create(user);
+        notificationService.createInfoNotification("Dobro došli", "Uspješno ste kreirali korisnički račun", newUser);
         return new ResponseEntity<>(new UserDtoAdapter(newUser), HttpStatus.CREATED);
     }
 
@@ -96,6 +98,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         String jwt = jwtService.generateJwtToken(authentication);
+        notificationService.createInfoNotification("Prijava", "Uspješno ste se prijavili u sustav", userService.findById(userDetails.getId()));
         return new ResponseEntity<>(new BearerLogInResponse(jwt, userDetails.getUsername(), userDetails.getId()), HttpStatus.OK);
     }
 
@@ -127,6 +130,7 @@ public class UserController {
         }
         user.setId(id);
         userService.update(user);
+        notificationService.createInfoNotification("Ažurirali ste podatke", "Uspješno ste ažurirali podatke", user);
         return new ResponseEntity<>("\"Success\"", HttpStatus.OK);
     }
 
@@ -136,6 +140,7 @@ public class UserController {
         User user = userService.findById(id);
         user.setSettings(Mapper.userSettingsToJson(userSettings));
         userService.update(user);
+        notificationService.createInfoNotification("Ažurirali ste postavke", "Uspješno ste ažurirali postavke", user);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
