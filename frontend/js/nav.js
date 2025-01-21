@@ -88,17 +88,32 @@ window.onload = function(){
                     }
                 ).then(res => res.json())
                     .then(json => {
-                        if(numberOfNotifications != json.length){
+                        if(numberOfNotifications > json.length)
                             notificationIcon.classList.add("badge")
+                        if(numberOfNotifications != json.length){
+                            notificationList.innerHTML = ""
                             numberOfNotifications = json.length
                             for(let notification of json){
                                 insertNotification(notification)
                             }
                         }
-                        console.log(json)
                     }).catch(error => {
                         console.log(error)
                     })
+        }
+
+        function deleteNotification(id){
+            fetch(
+                'http://localhost:8080/api/notification/' + id,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": generateAuthorization()
+                    }
+                }
+            )
+            fetchNotifications()        
         }
 
         function insertNotification(notification){
@@ -118,7 +133,7 @@ window.onload = function(){
             }else{
                 doc.body.firstChild.style.fontWeight = "400"
             }
-            //doc.body.firstChild.addEventListener("click", markAsRead(doc.body.firstChild.id))
+            doc.body.firstChild.addEventListener("click", deleteNotification(doc.body.firstChild.id))
             notificationList.insertBefore(parser.parseFromString('<hr>', 'text/html').body.firstChild, notificationList.firstChild)
             notificationList.insertBefore(doc.body.firstChild, notificationList.firstChild)
         }

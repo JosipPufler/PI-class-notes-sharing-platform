@@ -88,7 +88,7 @@ function resolveErrors() {
                 if (json.id != null) {
                     alert("User created")
                     localStorage.setItem("UserId", json.id)
-                    window.location.href="../html/createInterest.html"
+                    window.location.href="../html/login.html"
                 }
                 else if(json == "username"){
                     showError("To korisnicko ime je zauzeto", json)

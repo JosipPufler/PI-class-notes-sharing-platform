@@ -1,10 +1,9 @@
 package hr.algebra.pi.models;
 
 import hr.algebra.pi.interfaces.LogInResponse;
-import hr.algebra.pi.models.DTOs.BearerLogInResponse;
 
 public class LogInResponseDecorator {
-    private final hr.algebra.pi.interfaces.LogInResponse logInResponse;
+    private final LogInResponse logInResponse;
 
     public LogInResponseDecorator(LogInResponse logInResponse){
         this.logInResponse = logInResponse;

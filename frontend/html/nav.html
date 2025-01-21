@@ -24,13 +24,13 @@
         <li class="icon" id="notificationIcon">
           <i id="notificationSymbol" class="fa-solid fa-bell fa-xl badge"></i>
 
-          <div id="confirmPopUp" style="height: 1000px; width: 1000px;">
-            <div class="popUpBackground"></div>
+          <div id="confirmPopUp" style="height: 1000px; width: 1000px; z-index: 15;">
+            <div class="popUpBackground notification-background" style="z-index: 15;"></div>
             <form
               id="popUpForm"
-              class="form top"
+              class="form notification-layer notification-layer"
               method="post"
-              style="margin: 15px; width: 40%;"
+              style="margin: 15px; width: 40%; z-index: 16;"
             >
               <h2 calss="formTitle" style="margin-bottom: 15px;">
                 <span style="margin-right: 50px;">Notifikacije</span>
