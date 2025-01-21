@@ -80,6 +80,7 @@ async function fetchMaterials() {
             {
                 method: "GET",
                 headers: {
+                    "Content-Type": "application/json",
                     "Authorization": generateAuthorization()
                 },
             }
@@ -145,12 +146,11 @@ document.getElementById('createDocumentForm').addEventListener('submit', async (
     formData.append('file', fileWithSpace);
 
     try {
-        const response = await fetch('http://localhost:8080/api/materials', {
+        const response = await fetch('http://localhost:8080/api/materials/create', {
             method: 'POST',
             headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": generateAuthorization()
-                },
+                "Authorization": generateAuthorization()
+            },
             body: formData
         });
 

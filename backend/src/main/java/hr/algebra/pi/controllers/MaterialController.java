@@ -1,9 +1,14 @@
 package hr.algebra.pi.controllers;
 
 import hr.algebra.pi.models.Material;
+import hr.algebra.pi.observers.LoggingObserver;
+import hr.algebra.pi.observers.MaterialEventManager;
 import hr.algebra.pi.services.Mapper;
 import hr.algebra.pi.services.MaterialService;
 import hr.algebra.pi.services.MaterialTypeService;
+import hr.algebra.pi.services.material.MaterialTemplate;
+import hr.algebra.pi.services.material.MaterialFileUpload;
+import hr.algebra.pi.services.utilities.FileStorageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,11 +34,19 @@ import java.util.List;
 @RequestMapping("/api/materials")
 public class MaterialController {
 
+    public MaterialController() {
+        eventManager.subscribe(new LoggingObserver());
+    }
+
     @Autowired
     private MaterialService materialService;
 
     @Autowired
     private MaterialTypeService materialTypeService;
+
+    private final FileStorageFactory fileStorageFactory = FileStorageFactory.getInstance();
+
+    private final MaterialEventManager eventManager = new MaterialEventManager();
 
     private final String storageDirectory = "uploads";
     @Autowired
@@ -41,7 +54,7 @@ public class MaterialController {
 
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/api/materials/create")
+    @PostMapping("/create")
     public ResponseEntity<Material> createMaterial(
             @RequestParam("file") MultipartFile file,
             @RequestParam("userId") Long userId,
@@ -75,7 +88,7 @@ public class MaterialController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/api/materials/upload")
+    @PostMapping("/upload")
     public ResponseEntity<Material> uploadMaterial(
             @RequestParam("file") MultipartFile file,
             @RequestParam("userId") Long userId,
@@ -84,31 +97,26 @@ public class MaterialController {
             @RequestParam("description") String description,
             @RequestParam(value = "tags", required = false) String tags) {
 
-        File directory = new File(storageDirectory);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
         try {
-            Path filePath = Paths.get(storageDirectory, file.getOriginalFilename());
-            Files.write(filePath, file.getBytes());
-
             Material material = new Material();
             material.setUser(materialService.findUserById(userId));
             material.setMaterialType(materialTypeService.findById(materialTypeId).get());
             material.setName(name);
             material.setDescription(description);
-            material.setCreationDate(java.time.LocalDate.now());
-            material.setLocation(filePath.toString());
             material.setTags(tags);
 
-            Material savedMaterial = materialService.saveMaterial(material);
+            MaterialTemplate template = new MaterialFileUpload(fileStorageFactory);
+            Material savedMaterial = template.saveMaterial(materialService, material, file);
+
+            eventManager.notify("UploadMaterialCreated", savedMaterial);
 
             return ResponseEntity.ok(savedMaterial);
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body(null);
+        } catch (Exception e) {
+            eventManager.notify("UploadMaterialException", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
