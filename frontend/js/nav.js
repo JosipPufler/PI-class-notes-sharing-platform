@@ -85,7 +85,7 @@ window.onload = function(){
                         "Content-Type": "application/json",
                         "Authorization": generateAuthorization()
                     }
-
+                }
                 ).then(res => res.json())
                     .then(json => {
                         if(numberOfNotifications > json.length)
