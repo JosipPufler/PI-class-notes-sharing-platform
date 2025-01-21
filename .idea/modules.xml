@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/PI-class-notes-sharing-platform.iml" filepath="$PROJECT_DIR$/.idea/PI-class-notes-sharing-platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/pi.iml" filepath="$PROJECT_DIR$/backend/pi.iml" />
     </modules>
   </component>
 </project>
