@@ -8,6 +8,7 @@ window.onload = function(){
         const dropdownLogOut = document.getElementById("dropdownLogOut")
         const notificationIcon = document.getElementById("notificationSymbol")
         const notificationList = document.getElementById("notificationList")
+        const groupsDropdown = document.querySelector("li.dropdown:nth-of-type(3) .dropdown-content")
         var numberOfNotifications = 0
 
         const parser = new DOMParser();
@@ -28,7 +29,6 @@ window.onload = function(){
             }
             popUpActive = !popUpActive;
         }
-
 
         document.onkeydown = function (evt) {
             let isEscape = false;
@@ -54,7 +54,7 @@ window.onload = function(){
             notificationIcon.classList.remove("badge")
             toggleConfirmPopup()
         }
-        
+
         dropdown?.addEventListener('click', function (event) {
             event.stopPropagation();
         });
@@ -78,14 +78,14 @@ window.onload = function(){
 
         function fetchNotifications(){
             fetch(
-                    'http://localhost:8080/api/notification/' + getUserId(),
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": generateAuthorization()
-                        }
+                'http://localhost:8080/api/notification/' + getUserId(),
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": generateAuthorization()
                     }
+
                 ).then(res => res.json())
                     .then(json => {
                         if(numberOfNotifications > json.length)
@@ -124,7 +124,7 @@ window.onload = function(){
                   </div>
                   <div>
                     <p style="text-align: justify;">
-                        `+ notification.content +`  
+                        `+ notification.content +`
                     </p>
                   </div>
                 </div>`, 'text/html');
@@ -133,6 +133,7 @@ window.onload = function(){
             }else{
                 doc.body.firstChild.style.fontWeight = "400"
             }
+
             doc.body.firstChild.addEventListener("click", deleteNotification(doc.body.firstChild.id))
             notificationList.insertBefore(parser.parseFromString('<hr>', 'text/html').body.firstChild, notificationList.firstChild)
             notificationList.insertBefore(doc.body.firstChild, notificationList.firstChild)
@@ -148,11 +149,31 @@ window.onload = function(){
             fetchNotifications()
             while(true){
                 await new Promise(resolve => setTimeout(resolve, 5000))
-                fetchNotifications()    
+                fetchNotifications()
             }
         }
 
         startNotificationListener()
+
+        fetch(`http://localhost:8080/api/group/user/${getUserId()}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
+            }
+        })
+            .then(response => response.json())
+            .then(groups => {
+                groups.forEach(group => {
+                    const groupLink = document.createElement("a");
+                    groupLink.href = `groupview.html?id=${group.id}`;
+                    groupLink.textContent = group.name;
+                    groupsDropdown.appendChild(groupLink);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching groups:", error);
+            });
     })
 }
 

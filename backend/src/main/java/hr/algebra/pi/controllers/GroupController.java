@@ -3,6 +3,10 @@ package hr.algebra.pi.controllers;
 import hr.algebra.pi.models.CreateGroupForm;
 import hr.algebra.pi.models.Group;
 import hr.algebra.pi.models.User;
+import hr.algebra.pi.repositories.GroupRepo;
+import hr.algebra.pi.repositories.UserRepo;
+import hr.algebra.pi.services.GroupBuilder;
+import hr.algebra.pi.services.GroupFactory;
 import hr.algebra.pi.services.GroupService;
 import hr.algebra.pi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +14,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,8 +44,24 @@ public class GroupController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<Group> addGroup(@RequestBody CreateGroupForm createGroupForm) {
-        Group group = new Group(createGroupForm);
+        Group group = GroupFactory.createGroup(createGroupForm);
+
+        group = GroupBuilder.start()
+                .id(group.getId())
+                .name(group.getName())
+                .description(group.getDescription())
+                .dateCreation(group.getDateCreation())
+                .users(group.getUsers())
+                .build();
+
         Group newGroup = groupService.createGroup(group);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        groupService.addUserToGroup(newGroup, user);
+
         return new ResponseEntity<>(newGroup, HttpStatus.CREATED);
     }
 
@@ -81,6 +104,30 @@ public class GroupController {
             }
         } else {
             return new ResponseEntity<>("Group or User not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Group>> getGroupsForUser(@PathVariable Long userId) {
+        User user = userService.findById(userId);
+        if (user != null) {
+            List<Group> groups = groupService.getGroupsForUser(user);
+            return new ResponseEntity<>(groups, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteGroup(@PathVariable Long id) {
+        Group group = groupService.getGroupById(id);
+        if (group != null) {
+            groupService.deleteGroup(group);
+            return new ResponseEntity<>("Group deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Group not found", HttpStatus.NOT_FOUND);
         }
     }
 
