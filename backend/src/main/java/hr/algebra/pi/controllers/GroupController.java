@@ -5,6 +5,7 @@ import hr.algebra.pi.models.Group;
 import hr.algebra.pi.models.User;
 import hr.algebra.pi.repositories.GroupRepo;
 import hr.algebra.pi.repositories.UserRepo;
+import hr.algebra.pi.services.GroupBuilder;
 import hr.algebra.pi.services.GroupFactory;
 import hr.algebra.pi.services.GroupService;
 import hr.algebra.pi.services.UserService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +45,15 @@ public class GroupController {
     @PostMapping
     public ResponseEntity<Group> addGroup(@RequestBody CreateGroupForm createGroupForm) {
         Group group = GroupFactory.createGroup(createGroupForm);
+
+        group = GroupBuilder.start()
+                .id(group.getId())
+                .name(group.getName())
+                .description(group.getDescription())
+                .dateCreation(group.getDateCreation())
+                .users(group.getUsers())
+                .build();
+
         Group newGroup = groupService.createGroup(group);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
