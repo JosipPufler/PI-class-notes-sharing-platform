@@ -53,39 +53,39 @@ public class MaterialController {
     private Mapper mapper;
 
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/create")
-    public ResponseEntity<Material> createMaterial(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("userId") Long userId,
-            @RequestParam("materialTypeId") Long materialTypeId,
-            @RequestParam("name") String name,
-            @RequestParam("description") String description) {
-
-        File directory = new File(storageDirectory);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        try {
-            Path filePath = Paths.get(storageDirectory, file.getOriginalFilename());
-            Files.write(filePath, file.getBytes());
-
-            Material material = new Material();
-            material.setUser(materialService.findUserById(userId));
-            material.setMaterialType(materialTypeService.findById(materialTypeId).get());
-            material.setName(name);
-            material.setDescription(description);
-            material.setCreationDate(java.time.LocalDate.now());
-            material.setLocation(filePath.toString());
-
-            Material savedMaterial = materialService.saveMaterial(material);
-
-            return ResponseEntity.ok(savedMaterial);
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body(null);
-        }
-    }
+//    @PreAuthorize("isAuthenticated()")
+//    @PostMapping("/create")
+//    public ResponseEntity<Material> createMaterial(
+//            @RequestParam("file") MultipartFile file,
+//            @RequestParam("userId") Long userId,
+//            @RequestParam("materialTypeId") Long materialTypeId,
+//            @RequestParam("name") String name,
+//            @RequestParam("description") String description) {
+//
+//        File directory = new File(storageDirectory);
+//        if (!directory.exists()) {
+//            directory.mkdirs();
+//        }
+//
+//        try {
+//            Path filePath = Paths.get(storageDirectory, file.getOriginalFilename());
+//            Files.write(filePath, file.getBytes());
+//
+//            Material material = new Material();
+//            material.setUser(materialService.findUserById(userId));
+//            material.setMaterialType(materialTypeService.findById(materialTypeId).get());
+//            material.setName(name);
+//            material.setDescription(description);
+//            material.setCreationDate(java.time.LocalDate.now());
+//            material.setLocation(filePath.toString());
+//
+//            Material savedMaterial = materialService.saveMaterial(material);
+//
+//            return ResponseEntity.ok(savedMaterial);
+//        } catch (IOException e) {
+//            return ResponseEntity.status(500).body(null);
+//        }
+//    }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")

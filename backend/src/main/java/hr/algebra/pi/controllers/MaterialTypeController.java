@@ -19,12 +19,6 @@ public class MaterialTypeController {
     private MaterialTypeService materialTypeService;
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping
-    public ResponseEntity<MaterialType> createMaterialType(@RequestBody MaterialType materialType) {
-        return ResponseEntity.ok(materialTypeService.saveMaterialType(materialType));
-    }
-
-    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<MaterialType>> getAllMaterialTypes() {
 //        return ResponseEntity<>.ok(materialTypeService.getAllMaterialTypes());
