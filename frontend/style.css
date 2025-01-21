@@ -296,7 +296,6 @@
   .right li a:hover {
     background-color: var(--cream-white);
     color: var(--light-grey);
-    font-weight: 800;
   }
   
   .icon i {
@@ -367,13 +366,20 @@
     left: 50vw;
     transform: translate(-50%, -50%);
     background: white;
-    z-index: 10;
     padding: 20px 30px;
     border-radius: 15px;
   }
-  
+
   .top {
     z-index: 12;
+  }
+
+  .notification-background {
+    z-index: 13 !important;
+  }
+
+  .notification-layer {
+    z-index: 14 !important; 
   }
   
   .dropdown-content {

@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addUserForm = document.getElementById("addUserForm");
     const searchBar = document.getElementById("userSearchBar");
     const usersList = document.getElementById("usersList");
+    const deleteGroupButton = document.getElementById("deleteGroupButton");
 
     const groupId = new URLSearchParams(window.location.search).get("id");
     let group; // Define the group variable here
@@ -60,8 +61,18 @@ document.addEventListener("DOMContentLoaded", () => {
             "Authorization": generateAuthorization()
         }
     })
-        .then(response => response.json())
+        .then(response => {
+            console.log("Response status:", response.status); // Log the response status
+            console.log("Response status text:", response.statusText); // Log the response status text
+            if (!response.ok) {
+                throw new Error("Network response was not ok " + response.statusText);
+            }
+            return response.json();
+        })
         .then(users => {
+            if (!Array.isArray(users)) {
+                throw new TypeError("Expected an array but got " + typeof users);
+            }
             usersList.innerHTML = "";
             users.forEach(user => {
                 const listItem = document.createElement("li");
@@ -74,6 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 listItem.appendChild(addButton);
                 usersList.appendChild(listItem);
             });
+        })
+        .catch(error => {
+            console.error("Error fetching users:", error);
         });
 
     function addUserToGroup(userId, groupId) {
@@ -119,6 +133,32 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => {
                 console.error("Error adding user to group:", error);
+            });
+    }
+
+    deleteGroupButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to delete this group? This action cannot be undone.")) {
+            deleteGroup(groupId);
+        }
+    });
+
+    function deleteGroup(groupId) {
+        fetch(`http://localhost:8080/api/group/${groupId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": generateAuthorization()
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to delete group");
+                }
+                alert("Group deleted successfully");
+                window.location.href = "home.html";
+            })
+            .catch(error => {
+                console.error("Error deleting group:", error);
             });
     }
 });

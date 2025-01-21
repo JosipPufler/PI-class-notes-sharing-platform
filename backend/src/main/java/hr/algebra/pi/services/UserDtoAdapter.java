@@ -1,27 +1,107 @@
 package hr.algebra.pi.services;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import hr.algebra.pi.models.DTOs.UserDTO;
+import hr.algebra.pi.models.Interest;
 import hr.algebra.pi.models.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import hr.algebra.pi.models.UserSettings;
 
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class UserDtoAdapter extends UserDTO implements Serializable {
+public class UserDtoAdapter extends UserDTO {
+    private final User user;
+
     public UserDtoAdapter(User user){
-        this.setActive(user.isActive());
-        this.setId(user.getId());
-        this.setEmail(user.getEmail());
-        this.setFirstName(user.getFirstName());
-        this.setLastName(user.getLastName());
-        this.setUsername(user.getUsername());
-        this.setPhoneNumber(user.getPhoneNumber());
-        this.setInterests(user.getInterests().stream().toList());
+        this.user = user;
+    }
+
+    @Override
+    public Long getId() {
+        return user.getId();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
+    }
+
+    @Override
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    @Override
+    public String getLastName() {
+        return user.getLastName();
+    }
+
+    @Override
+    public String getEmail() {
+        return user.getEmail();
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return user.getPhoneNumber();
+    }
+
+    @Override
+    public List<Interest> getInterests() {
+        return user.getInterests().stream().toList();
+    }
+
+    @Override
+    public Boolean getActive() {
+        return user.isActive();
+    }
+
+    @Override
+    public UserSettings getSettings() {
+        return Mapper.jsonToUserSettings(user.getSettings());
+    }
+
+    @Override
+    public void setId(Long id) {
+        user.setId(id);
+    }
+
+    @Override
+    public void setUsername(String username) {
+        user.setUsername(username);
+    }
+
+    @Override
+    public void setFirstName(String firstName) {
+        user.setFirstName(firstName);
+    }
+
+    @Override
+    public void setLastName(String lastName) {
+        user.setLastName(lastName);
+    }
+
+    @Override
+    public void setEmail(String email) {
+        user.setEmail(email);
+    }
+
+    @Override
+    public void setPhoneNumber(String phoneNumber) {
+        user.setPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public void setInterests(List<Interest> interests) {
+        user.setInterests(new HashSet<>(interests));
+    }
+
+    @Override
+    public void setActive(Boolean active) {
+        user.setActive(active);
+    }
+
+    @Override
+    public void setSettings(UserSettings settings) {
+        user.setSettings(Mapper.userSettingsToJson(new UserSettings()));
     }
 }

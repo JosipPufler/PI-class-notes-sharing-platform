@@ -207,8 +207,7 @@ $(document).ready(function() {
     ).then(res => res.json())
         .then(json => {
             console.log(json)
-        }
-        )
+        })
     
     fetch(
         'http://localhost:8080/api/interest',

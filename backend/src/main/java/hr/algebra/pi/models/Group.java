@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,21 +29,16 @@ public class Group {
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> users;
+    private List<User> users = new ArrayList<>();;
 
     public Group() {}
 
-    public Group(Long id, String name, String description, Date dateCreation) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.dateCreation = dateCreation;
-    }
 
     public Group(CreateGroupForm createGroupForm) {
         this.name = createGroupForm.getName();
         this.description = createGroupForm.getDescription();
         this.dateCreation = new Date();
+        this.users = new ArrayList<>();
     }
 
     @Override
