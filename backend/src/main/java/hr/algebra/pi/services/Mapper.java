@@ -61,7 +61,7 @@ public class Mapper {
         try {
             return objectMapper.readValue(json, UserSettings.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            return new UserSettings();
         }
     }
 }

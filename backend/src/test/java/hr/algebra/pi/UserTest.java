@@ -26,6 +26,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -263,7 +264,7 @@ class UserTest {
 
     @Test
     void testUserDtoAdapter() {
-        User user = new User(1L, "User", "password", "firstname", "lastname", "email", "phone", true, null, null, null, null);
+        User user = new User(1L, "User", "password", "firstname", "lastname", "email", "phone", true, null, new HashSet<>(), null, null);
         UserDTO userDTO = new UserDtoAdapter(user);
         assertThat(userDTO.getUsername()).isEqualTo(user.getUsername());
         assertThat(userDTO.getFirstName()).isEqualTo(user.getFirstName());
@@ -273,7 +274,7 @@ class UserTest {
         assertThat(userDTO.getEmail()).isEqualTo(user.getEmail());
         assertThat(userDTO.getPhoneNumber()).isEqualTo(user.getPhoneNumber());
 
-        User newUser = new User(2L, "User2", "password2", "firstname2", "lastname2", "email2", "phone2", false, null, null, null, null);
+        User newUser = new User(2L, "User2", "password2", "firstname2", "lastname2", "email2", "phone2", false, null, new HashSet<>(), null, null);
         UserDTO newUserDto = new UserDtoAdapter(user);
         newUserDto.setSettings(null);
         assertThat(newUserDto.getSettings()).isEqualTo(new UserSettings());
