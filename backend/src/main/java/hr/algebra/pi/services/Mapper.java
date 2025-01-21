@@ -60,7 +60,7 @@ public class Mapper {
     public static UserSettings jsonToUserSettings(String json){
         try {
             return objectMapper.readValue(json, UserSettings.class);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             return new UserSettings();
         }
     }
