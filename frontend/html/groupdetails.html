@@ -108,6 +108,20 @@
         #usersList li button:hover {
             background-color: #0056b3;
         }
+
+        button#deleteGroupButton {
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button#deleteGroupButton:hover {
+            background-color: #ffa200;
+        }
     </style>
     <!--font awsome-->
     <script src="https://kit.fontawesome.com/e62814bca5.js" crossorigin="anonymous"></script>
@@ -125,6 +139,8 @@
         <input type="text" id="userSearchBar" placeholder="Search users...">
         <ul id="usersList"></ul>
     </div>
+
+    <button id="deleteGroupButton">Delete Group</button>
 
 <script type="module" src="../js/groupdetails.js"></script>
 <script type="module" src="../js/nav.js"></script>

@@ -5,13 +5,16 @@ import hr.algebra.pi.models.User;
 import hr.algebra.pi.repositories.GroupRepo;
 import hr.algebra.pi.repositories.UserRepo;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
+@Scope("singleton")
 @Transactional
 public class GroupService {
+    private static GroupService instance;
     private final GroupRepo groupRepo;
     private final UserRepo userRepo;
 
@@ -40,5 +43,14 @@ public class GroupService {
             groupRepo.saveAndFlush(group);
             return true;
         }
+    }
+
+    public List<Group> getGroupsForUser(User user) {
+        return groupRepo.findByUsersContaining(user);
+    }
+
+    public void deleteGroup(Group group) {
+        group.getUsers().clear();
+        groupRepo.delete(group);
     }
 }
